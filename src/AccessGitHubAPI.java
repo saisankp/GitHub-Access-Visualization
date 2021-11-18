@@ -6,22 +6,20 @@ import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.client.GitHubClient;
 import org.eclipse.egit.github.core.service.RepositoryService;
 
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
+
 public class AccessGitHubAPI {
 	public static void main(String[] args) {
+		MongoClient client = MongoClients.create("mongodb+srv://saisankp:zT4mSQDWNRN24Jh@cluster0.yidvg.mongodb.net/myFirstDatabase?retryWrites=true&w=majority");
 		while (true) {
 			Scanner scanner = new Scanner(System.in);
 			try {
-				GitHubClient client = new GitHubClient();
-				System.out.println("Please enter your Github username");
-				String username = scanner.nextLine();
-				System.out.println("Welcome, " + username + "! Please enter your Github password");
-				String password = scanner.nextLine();
-				client.setCredentials(username, password);
 				RepositoryService repoService = new RepositoryService();
 				while (true) {
 					System.out.println(
 							"Please enter a username to view their repository information, or type 'quit' to exit.");
-					username = scanner.nextLine();
+					String username = scanner.nextLine();
 					if (username.equalsIgnoreCase("quit"))
 						return;
 					for (Repository repo : repoService.getRepositories(username)) {
