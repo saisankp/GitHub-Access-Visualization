@@ -12,6 +12,7 @@ local.properties
 .DS_Store
 .classpath
 .project
+.env
 
 # External tool builders
 .externalToolBuilders/
