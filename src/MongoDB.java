@@ -28,7 +28,6 @@ public class MongoDB {
 		col = db.getCollection(collectionName);
 	}
 	
-	
 	public void getAndStoreUserRepositoryInfo(GitHubClient client, String username) throws IOException {
 		int id = 1;
 		RepositoryService repoService = new RepositoryService(client);
