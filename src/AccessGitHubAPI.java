@@ -15,9 +15,12 @@ public class AccessGitHubAPI {
 		GitHubClient GHclient = new GitHubClient();
 		GHclient.setCredentials(dotenv.get("GITHUB_USERNAME"), dotenv.get("GITHUB_PASSWORD"));
 		Scanner scanner = new Scanner(System.in);
-		System.out.println("Enter a GitHub username to store the information of all their repositories into your MongoDB collection.");
+		System.out.println("Enter a GitHub username to store their information into your MongoDB collection.");
 		String username = scanner.next();
 		mongodb.clearCollection();
 		mongodb.getAndStoreUserRepositoryInfo(GHclient, username);
+		mongodb.setCollection("userData");
+		mongodb.clearCollection();
+		mongodb.getAndStoreUserInfo(GHclient, username);
 	}	
 }

@@ -6,9 +6,11 @@ import java.util.List;
 import org.bson.Document;
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.RepositoryCommit;
+import org.eclipse.egit.github.core.User;
 import org.eclipse.egit.github.core.client.GitHubClient;
 import org.eclipse.egit.github.core.service.CommitService;
 import org.eclipse.egit.github.core.service.RepositoryService;
+import org.eclipse.egit.github.core.service.UserService;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.client.FindIterable;
@@ -25,6 +27,14 @@ public class MongoDB {
 	public MongoDB(String mongoUsername, String mongoPassword, String databaseName, String collectionName) {
 		client = MongoClients.create("mongodb+srv://" + mongoUsername + ":" + mongoPassword + "@cluster0.yidvg.mongodb.net/myFirstDatabase?retryWrites=true&w=majority");
 		db = client.getDatabase(databaseName);
+		col = db.getCollection(collectionName);
+	}
+	
+	public void setDatabase(String databaseName) {
+		db = client.getDatabase(databaseName);
+	}
+	
+	public void setCollection(String collectionName) {
 		col = db.getCollection(collectionName);
 	}
 
@@ -56,6 +66,24 @@ public class MongoDB {
 			col.insertOne(mongoDocument);
 			id++;
 		}
+	}
+	
+	
+	public void getAndStoreUserInfo(GitHubClient client, String username) throws IOException {
+		UserService userService = new UserService();
+		User user = userService.getUser(username);
+		Document mongoDocument = new Document("_id", 1);
+		mongoDocument.append("User Name", user.getName());
+		mongoDocument.append("Followers", user.getFollowers());
+		mongoDocument.append("Following", user.getFollowing());
+		mongoDocument.append("Location", user.getLocation());
+		mongoDocument.append("Hirable", user.isHireable());
+		mongoDocument.append("Public repositories", user.getPublicRepos());
+		mongoDocument.append("Linked Blog URL", user.getBlog());
+		mongoDocument.append("Account creation", user.getCreatedAt());
+		mongoDocument.append("GitHub Account URL", user.getHtmlUrl());
+		mongoDocument.append("GitHub Avatar URL", user.getAvatarUrl());
+		col.insertOne(mongoDocument);
 	}
 
 	public void clearCollection() {
