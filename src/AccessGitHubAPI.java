@@ -3,7 +3,6 @@ import java.util.Scanner;
 
 import org.eclipse.egit.github.core.client.GitHubClient;
 
-
 import io.github.cdimascio.dotenv.Dotenv;
 
 public class AccessGitHubAPI {
@@ -16,7 +15,7 @@ public class AccessGitHubAPI {
 		GitHubClient GHclient = new GitHubClient();
 		GHclient.setCredentials(dotenv.get("GITHUB_USERNAME"), dotenv.get("GITHUB_PASSWORD"));
 		Scanner scanner = new Scanner(System.in);
-		System.out.println("Please enter a username to view their repository information, or type 'quit' to exit.");
+		System.out.println("Enter a GitHub username to store the information of all their repositories into your MongoDB collection.");
 		String username = scanner.next();
 		mongodb.clearCollection();
 		mongodb.getAndStoreUserRepositoryInfo(GHclient, username);

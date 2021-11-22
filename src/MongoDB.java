@@ -18,16 +18,16 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 
 public class MongoDB {
-	 private static MongoClient client;
-	 private static MongoDatabase db;
-	 private static MongoCollection<Document> col;
-	 
+	private MongoClient client;
+	private MongoDatabase db;
+	private MongoCollection<Document> col;
+
 	public MongoDB(String mongoUsername, String mongoPassword, String databaseName, String collectionName) {
 		client = MongoClients.create("mongodb+srv://" + mongoUsername + ":" + mongoPassword + "@cluster0.yidvg.mongodb.net/myFirstDatabase?retryWrites=true&w=majority");
 		db = client.getDatabase(databaseName);
 		col = db.getCollection(collectionName);
 	}
-	
+
 	public void getAndStoreUserRepositoryInfo(GitHubClient client, String username) throws IOException {
 		int id = 1;
 		RepositoryService repoService = new RepositoryService(client);
@@ -40,7 +40,7 @@ public class MongoDB {
 			List<String> list = new ArrayList<>();
 			for(RepositoryCommit commit : commitService.getCommits(repo)) {
 				list = hm.getOrDefault(commit.getCommit().getAuthor().getName(), new ArrayList<>());
-			    list.add(commit.getCommit().getMessage().toString());
+				list.add(commit.getCommit().getMessage().toString());
 				hm.put(commit.getCommit().getAuthor().getName(), list);
 			}
 			mongoDocument.append("Commits", hm);
@@ -57,14 +57,15 @@ public class MongoDB {
 			id++;
 		}
 	}
-	
+
 	public void clearCollection() {
 		if(col.countDocuments() == 0) {
 			return;
 		}
-		FindIterable<Document> findIterable = col.find();
-		BasicDBObject document = new BasicDBObject();
-		// Delete All documents from collection Using blank BasicDBObject
-		col.deleteMany(document);
+		else {
+			FindIterable<Document> findIterable = col.find();
+			BasicDBObject document = new BasicDBObject();
+			col.deleteMany(document);	
+		}
 	}
 }
