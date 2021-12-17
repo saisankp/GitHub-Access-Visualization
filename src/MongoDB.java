@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.bson.Document;
+import org.bson.conversions.Bson;
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.RepositoryCommit;
 import org.eclipse.egit.github.core.User;
@@ -36,6 +37,14 @@ public class MongoDB {
 	
 	public void setCollection(String collectionName) {
 		col = db.getCollection(collectionName);
+	}
+	
+	public MongoDatabase getDatabase() {
+		return db;
+	}
+	
+	public MongoCollection<Document> getCollection() {
+		return col;
 	}
 
 	public void getAndStoreUserRepositoryInfo(GitHubClient client, String username) throws IOException {
@@ -96,4 +105,9 @@ public class MongoDB {
 			col.deleteMany(document);	
 		}
 	}
+	
+	public void insertDocument(Document mongoDocument) {
+		col.insertOne(mongoDocument);
+	}
+	
 }
