@@ -21,7 +21,7 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 
 public class MongoDB {
-	private MongoClient client;
+	protected MongoClient client;
 	private MongoDatabase db;
 	private MongoCollection<Document> col;
 
