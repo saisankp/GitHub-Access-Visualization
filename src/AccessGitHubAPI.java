@@ -10,12 +10,12 @@ public class AccessGitHubAPI {
 		//Get user password from .env file
 		Dotenv dotenv = Dotenv.load();
 		//Make MongoDB object to store GitHub data to MongoDB Atlas
-		MongoDB mongodb = new MongoDB("saisankp", dotenv.get("MONGO_PASSWORD"), "GitHubAPI", "repositories");
+		MongoDB mongodb = new MongoDB(dotenv.get("MONGO_USERNAME"), dotenv.get("MONGO_PASSWORD"), dotenv.get("DATABASE_NAME"), dotenv.get("COLLECTION_NAME"));
 		//Make GitHubClient object to sign into GitHub to make authenticated requests.
 		GitHubClient GHclient = new GitHubClient();
 		GHclient.setCredentials(dotenv.get("GITHUB_USERNAME"), dotenv.get("GITHUB_PASSWORD"));
 		Scanner scanner = new Scanner(System.in);
-		System.out.println("Enter a GitHub username to store their information into your MongoDB collection.");
+		System.out.println("Enter a GitHub username to store their information into your MongoDB collection: ");
 		String username = scanner.next();
 		mongodb.clearCollection();
 		mongodb.getAndStoreUserRepositoryInfo(GHclient, username);
