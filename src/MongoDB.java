@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.bson.Document;
 import org.bson.conversions.Bson;
+import org.eclipse.egit.github.core.Commit;
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.RepositoryCommit;
 import org.eclipse.egit.github.core.User;
@@ -50,36 +51,49 @@ public class MongoDB {
 	public void getAndStoreUserRepositoryInfo(GitHubClient client, String username) throws IOException {
 		int id = 1;
 		RepositoryService repoService = new RepositoryService(client);
-		CommitService commitService = new CommitService();
-		for (Repository repo : repoService.getRepositories(username)) {
+		CommitService commitService = new CommitService(client);
+		List<Repository> repoList = repoService.getRepositories(username);
+		for (Repository repo : repoList) {
 			System.out.println(repo.getName());
 			Document mongoDocument = new Document("_id", id);
 			mongoDocument.append("Repository name", repo.getName());
 			HashMap<String, List<String>> hm = new HashMap<>();
 			List<String> list = new ArrayList<>();
-			for(RepositoryCommit commit : commitService.getCommits(repo)) {
+			List<RepositoryCommit> repoCommits = commitService.getCommits(repo);
+			int numberOfCommits = 0;
+			for(RepositoryCommit commit : repoCommits) {				
 				list = hm.getOrDefault(commit.getCommit().getAuthor().getName(), new ArrayList<>());
 				list.add(commit.getCommit().getMessage().toString());
 				hm.put(commit.getCommit().getAuthor().getName(), list);
+				numberOfCommits++;
 			}
 			mongoDocument.append("Commits", hm);
+			mongoDocument.append("Number of commits", numberOfCommits);
+			mongoDocument.append("Number of forks", repo.getForks());
+			mongoDocument.append("Number of watchers", repo.getWatchers());
+			
 			mongoDocument.append("Language", repo.getLanguage());
 			mongoDocument.append("Description", repo.getDescription());
 			mongoDocument.append("Size", repo.getSize());
-			mongoDocument.append("Number of watchers", repo.getWatchers());
-			mongoDocument.append("Number of forks", repo.getForks());
+			
+			
 			mongoDocument.append("Creation", repo.getCreatedAt());
 			mongoDocument.append("Updated", repo.getUpdatedAt());
 			mongoDocument.append("URL", repo.getUrl());
 			System.out.println(mongoDocument.toJson());
-			col.insertOne(mongoDocument);
+			try {
+				col.insertOne(mongoDocument);
+			} catch (Exception e) {
+				System.out.println("I had an oopsie.");
+			}
+			
 			id++;
 		}
 	}
 	
 	
 	public void getAndStoreUserInfo(GitHubClient client, String username) throws IOException {
-		UserService userService = new UserService();
+		UserService userService = new UserService(client);
 		User user = userService.getUser(username);
 		Document mongoDocument = new Document("_id", 1);
 		mongoDocument.append("User Name", user.getName());
