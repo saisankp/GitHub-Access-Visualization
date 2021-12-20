@@ -56,7 +56,7 @@ public class MongoDB {
 		for (Repository repo : repoList) {
 			System.out.println(repo.getName());
 			Document mongoDocument = new Document("_id", id);
-			mongoDocument.append("Repository name", repo.getName());
+			mongoDocument.append("Repository-name", repo.getName());
 			HashMap<String, List<String>> hm = new HashMap<>();
 			List<String> list = new ArrayList<>();
 			List<RepositoryCommit> repoCommits = commitService.getCommits(repo);
@@ -68,9 +68,9 @@ public class MongoDB {
 				numberOfCommits++;
 			}
 			mongoDocument.append("Commits", hm);
-			mongoDocument.append("Number of commits", numberOfCommits);
-			mongoDocument.append("Number of forks", repo.getForks());
-			mongoDocument.append("Number of watchers", repo.getWatchers());
+			mongoDocument.append("Number-of-commits", numberOfCommits);
+			mongoDocument.append("Number-of-forks", repo.getForks());
+			mongoDocument.append("Number-of-watchers", repo.getWatchers());
 			
 			mongoDocument.append("Language", repo.getLanguage());
 			mongoDocument.append("Description", repo.getDescription());
@@ -96,16 +96,16 @@ public class MongoDB {
 		UserService userService = new UserService(client);
 		User user = userService.getUser(username);
 		Document mongoDocument = new Document("_id", 1);
-		mongoDocument.append("User Name", user.getName());
+		mongoDocument.append("User-Name", user.getName());
 		mongoDocument.append("Followers", user.getFollowers());
 		mongoDocument.append("Following", user.getFollowing());
 		mongoDocument.append("Location", user.getLocation());
 		mongoDocument.append("Hirable", user.isHireable());
-		mongoDocument.append("Public repositories", user.getPublicRepos());
-		mongoDocument.append("Linked Blog URL", user.getBlog());
-		mongoDocument.append("Account creation", user.getCreatedAt());
-		mongoDocument.append("GitHub Account URL", user.getHtmlUrl());
-		mongoDocument.append("GitHub Avatar URL", user.getAvatarUrl());
+		mongoDocument.append("Public-repositories", user.getPublicRepos());
+		mongoDocument.append("Linked-Blog-URL", user.getBlog());
+		mongoDocument.append("Account-creation", user.getCreatedAt());
+		mongoDocument.append("GitHub-Account-URL", user.getHtmlUrl());
+		mongoDocument.append("GitHub-Avatar-URL", user.getAvatarUrl());
 		col.insertOne(mongoDocument);
 	}
 
