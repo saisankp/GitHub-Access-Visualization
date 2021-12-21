@@ -96,7 +96,8 @@ public class MongoDB {
 		UserService userService = new UserService(client);
 		User user = userService.getUser(username);
 		Document mongoDocument = new Document("_id", 1);
-		mongoDocument.append("UserName", user.getName());
+		mongoDocument.append("UserName", username);
+		mongoDocument.append("Name", user.getName());
 		mongoDocument.append("Followers", user.getFollowers());
 		mongoDocument.append("Following", user.getFollowing());
 		mongoDocument.append("Location", user.getLocation());

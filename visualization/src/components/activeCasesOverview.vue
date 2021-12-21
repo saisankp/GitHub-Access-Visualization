@@ -4,10 +4,10 @@
     <v-row>
       <!-- We can now simply show information from the COVID-API after the API call. -->
       <v-col align="center">
-        <h3 style="color:white;" class="display-1 py-6"><b>Active Cases in Ireland</b></h3>
-        <p style="color:white;" class="headline">Currently infected : {{ stats.infected }}</p>
-        <p style="color:white;" class="headline">Last Checked : {{ stats.checked }}</p>
-        <p style="color:white;" class="headline">Last Reported : {{ stats.reported }}</p>
+        <h3 style="color:white;" class="display-1 py-6"><b>Account Information</b></h3>
+        <p style="color:white;" class="headline">Followers : {{ info.followers }}</p>
+        <p style="color:white;" class="headline">Following : {{ info.following }}</p>
+        <p style="color:white;" class="headline">Account created : {{ info.creation }}</p>
         <!-- After pressing the "Get Data" button, we want to update the data shown. -->
         <v-btn @click="getData">Get Data</v-btn>
       </v-col>
@@ -18,41 +18,35 @@
 <script>
 import axios from "axios";
 export default {
-  //Initially the data is not available.
+  //We have some default values for some information before the API call is made.
+  //If this shows for a long time, then there is a high chance that the API key is wrong.
   data: () => ({
-    stats: {
-      infected: "N/A",
-      checked: "N/A",
-      reported: "N/A"
+    info: {
+      name: "...",
+      followers: "...",
+      following: "...",
+      creation: "..."
     },
     object: null,
   }),
   methods: {
-    //These values are dummy values to show before the API call is made.
-    //If this shows for a long time, it means the API key is probably incorrect.
+    //Now we can make the API call.
     getData() {
-      this.stats.infected = "Loading...";
-      this.stats.checked = "Loading...";
-      this.stats.reported = "Loading...";
       axios
         .get(
-          "https://covid-19-coronavirus-statistics.p.rapidapi.com/v1/total",
+          "http://localhost:8080/userdata",
           {
-            params: {
-              country: "Ireland",
-            },
             headers: {
-              "x-rapidapi-key": process.env.VUE_APP_COVIDAPIKEY,
-              "x-rapidapi-host":
-                "covid-19-coronavirus-statistics.p.rapidapi.com",
+
             },
           }
         )
         .then((response) => {
-          //We can do some simple string concatenation to give us the desired output.
-          this.stats.infected = response.data.data.confirmed;
-          this.stats.checked = response.data.data.lastChecked.substring(0,10) + " at " + response.data.data.lastChecked.substring(11,16);
-          this.stats.reported = response.data.data.lastReported.substring(0,10) + " at " + response.data.data.lastReported.substring(11,16);
+          this.info.name = response.data[0].UserName;
+          this.info.followers = response.data[0].Followers;
+          this.info.following = response.data[0].Following;
+          this.info.creation = (response.data[0].AccountCreation).substring(8,10) + "/" + (response.data[0].AccountCreation).substring(5,7) + "/" +  (response.data[0].AccountCreation).substring(0,4);
+          console.warn(response);
         })
         .catch((e) => {
           /* eslint-disable no-console */
