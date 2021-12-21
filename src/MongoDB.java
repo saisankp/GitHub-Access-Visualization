@@ -67,7 +67,7 @@ public class MongoDB {
 				hm.put(commit.getCommit().getAuthor().getName(), list);
 				numberOfCommits++;
 			}
-			mongoDocument.append("Commits", hm);
+			//mongoDocument.append("Commits", hm);
 			mongoDocument.append("NumberOfCommits", numberOfCommits);
 			mongoDocument.append("NumberOfForks", repo.getForks());
 			mongoDocument.append("NumberOfWatchers", repo.getWatchers());
@@ -84,7 +84,26 @@ public class MongoDB {
 			try {
 				col.insertOne(mongoDocument);
 			} catch (Exception e) {
+				col.deleteOne(mongoDocument);
+				Document failedMongoDocument = new Document("_id", id);
+				mongoDocument.append("RepositoryName", repo.getName());
+				//mongoDocument.append("Commits", "N/A");
+				//mongoDocument.append("NumberOfCommits", numberOfCommits);
+				mongoDocument.append("NumberOfForks", repo.getForks());
+				mongoDocument.append("NumberOfWatchers", repo.getWatchers());
+				
+				mongoDocument.append("Language", repo.getLanguage());
+				//mongoDocument.append("Description", repo.getDescription());
+				//mongoDocument.append("Size", repo.getSize());
+				
+				
+				//mongoDocument.append("Creation", repo.getCreatedAt());
+				//mongoDocument.append("Updated", repo.getUpdatedAt());
+				//mongoDocument.append("URL", repo.getUrl());
+				System.out.println(mongoDocument.toJson());
+				col.insertOne(failedMongoDocument);
 				System.out.println("I had an oopsie.");
+				e.printStackTrace();
 			}
 			
 			id++;

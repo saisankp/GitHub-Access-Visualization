@@ -5,11 +5,11 @@
       <!-- We can now simply show information from the COVID-API after the API call. -->
       <v-col align="center">
         <h3 style="color:white;" class="display-1 py-6"><b>Personal Information</b></h3>
+        <p style="color:white;" class="headline">Name : {{ info.name }}</p>
         <p style="color:white;" class="headline">Location : {{ info.location }}</p>
         <p style="color:white;" class="headline">Hirable : {{ info.hirable }}</p>
-        <p style="color:white;" class="headline">Deaths : {{ info.deaths }}</p>
         <!-- After pressing the "Get Data" button, we want to update the data shown. -->
-        <v-btn @click="getData">Get Data</v-btn>
+        <v-btn @click="goToHome">Linked Website</v-btn>
       </v-col>
     </v-row>
   </v-card>
@@ -24,8 +24,9 @@ export default {
     info: {
       location: "...",
       hirable: "...",
-      following: "...",
-      creation: "..."
+      name: "...",
+      creation: "...",
+      site: "..."
     },
     object: null,
   }),
@@ -44,9 +45,14 @@ export default {
         .then((response) => {
           this.info.location = response.data[0].Location;
           this.info.hirable = response.data[0].Hirable;
-          this.info.following = response.data[0].Following;
-          this.info.creation = (response.data[0].AccountCreation).substring(8,10) + "/" + (response.data[0].AccountCreation).substring(5,7) + "/" +  (response.data[0].AccountCreation).substring(0,4);
-          console.warn(response);
+          if(this.info.hirable == false){
+            this.info.hirable = "No";
+          } else{
+            this.info.hirable = "Yes"
+          }
+          this.info.name = response.data[0].Name;
+          this.info.site = response.data[0].LinkedBlogURL;
+          //console.warn(response);
         })
         .catch((e) => {
           /* eslint-disable no-console */
@@ -54,6 +60,9 @@ export default {
           /* eslint-enable no-console */
         });
     },
+    goToHome(){
+    window.location.href = this.info.site;
+      }
   },
   created() {
     this.getData();

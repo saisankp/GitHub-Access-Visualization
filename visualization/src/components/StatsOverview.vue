@@ -5,8 +5,7 @@
       <v-col align="center">
         <!--We can call the responses from the API call and print them out with some other text. -->
         <h3 id="theTitle" class="display-1 py-6">
-           Welcome to my Software Engineering Metric Visualization. The user that you have chosen for this visualization is <span class="blue--text">{{ info.name }}</span>,
-           who follows <span class="green--text">{{ info.following }}</span> people and have <span class="green--text">{{ info.followers }}</span> followers.
+           Welcome to my Software Engineering Metric Visualization. <br> The user that you have chosen for this visualization is <span class="blue--text">{{ info.name }}</span>.
         </h3>
       </v-col>
     </v-row>
@@ -41,7 +40,7 @@ export default {
           this.info.name = response.data[0].UserName;
           this.info.followers = response.data[0].Followers;
           this.info.following = response.data[0].Following;
-          console.warn(response);
+          //console.warn(response);
         })
         .catch((e) => {
           /* eslint-disable no-console */

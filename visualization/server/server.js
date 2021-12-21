@@ -11,7 +11,7 @@ const { MongoClient } = require("mongodb");
 // Replace the uri string with your MongoDB deployment's connection string.
 const uri = "mongodb+srv://" + process.env.MONGO_USERNAME + ":" + process.env.MONGO_PASSWORD + "@cluster0.yidvg.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
 const client = new MongoClient(uri);
-app.get('/profile', services.mongodbcall);
+app.get('/repo', services.mongodbcall);
 app.get('/userdata', services.mongodbcall2);
 app.use(history());
 app.use(serveStatic(__dirname + "/dist"));

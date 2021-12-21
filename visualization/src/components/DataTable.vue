@@ -21,7 +21,7 @@
             solo-inverted
             hide-details
             prepend-inner-icon="mdi-magnify"
-            label="Search"
+            label="Search Repositories"
           ></v-text-field>
           <template v-if="$vuetify.breakpoint.mdAndUp">
             <v-spacer></v-spacer>
@@ -143,69 +143,8 @@ export default {
       page: 1,
       itemsPerPage: 4,
       sortBy: "name",
-      keys: ["Name", "Recovered", "Deaths", "Confirmed"],
-      items: [
-        {
-          name: "USA",
-          deaths: null,
-          recovered: null,
-          confirmed: null,
-        },
-        {
-          name: "India",
-          deaths: null,
-          recovered: null,
-          confirmed: null,
-        },
-        {
-          name: "Brazil",
-          deaths: null,
-          recovered: null,
-          confirmed: null,
-        },
-        {
-          name: "Russia",
-          deaths: null,
-          recovered: null,
-          confirmed: null,
-        },
-        {
-          name: "UK",
-          deaths: null,
-          recovered: null,
-          confirmed: null,
-        },
-        {
-          name: "France",
-          deaths: null,
-          recovered: null,
-          confirmed: null,
-        },
-        {
-          name: "Spain",
-          deaths: null,
-          recovered: null,
-          confirmed: null,
-        },
-        {
-          name: "Italy",
-          deaths: null,
-          recovered: null,
-          confirmed: null,
-        },
-        {
-          name: "Turkey",
-          deaths: null,
-          recovered: null,
-          confirmed: null,
-        },
-        {
-          name: "Ireland",
-          deaths: null,
-          recovered: null,
-          confirmed: null,
-        },
-      ],
+      keys: ["Name", "Language", "Commits", "Forks", "Watchers"],
+      items: [],
     };
   },
   computed: {
@@ -216,468 +155,42 @@ export default {
       return this.keys.filter((key) => key !== "Name");
     },
   },
-  methods: {
-    //Here we can have a dedicated function for each country's API call.
-    getDataforUSA() {
-      this.items[0].deaths = "Loading...";
-      this.items[0].recovered = "Loading...";
-      this.items[0].confirmed = "Loading...";
+  methods: {   
+    getData() {
       axios
         .get(
-          "https://covid-19-coronavirus-statistics.p.rapidapi.com/v1/total",
+          "http://localhost:8080/repo",
           {
-            params: {
-              country: "US",
-            },
             headers: {
-              "x-rapidapi-key": process.env.VUE_APP_COVIDAPIKEY,
-              "x-rapidapi-host":
-                "covid-19-coronavirus-statistics.p.rapidapi.com",
+
             },
           }
         )
         .then((response) => {
-          if(response.data.data.deaths == null){
-            this.items[0].deaths = "N/A";
-          }
-          else{
-            this.items[0].deaths = response.data.data.deaths;
-          }
+          const numberOfRepos = Object.keys(response.data).length;
+          for(var i = 0; i < numberOfRepos; i++){
+            //this.items[i].name = response.data[i].RepositoryName;
+            if(response.data[i].RepositoryName != null){
+            this.items.push(
+              {
+                name: response.data[i].RepositoryName,
+                language: response.data[i].Language || "Undefined",
+                commits : response.data[i].NumberOfCommits,
+                forks: response.data[i].NumberOfForks,
+                watchers: response.data[i].NumberOfWatchers,
+              },
+            );
+            }
 
-          if(response.data.data.recovered == null){
-            this.items[0].recovered = "N/A";
           }
-          else{
-            this.items[0].recovered = response.data.data.recovered;
-          }
-
-          if(response.data.data.confirmed == null){
-            this.items[0].confirmed = "N/A";
-          }
-          else{
-            this.items[0].confirmed = response.data.data.confirmed;
-          }
+          console.warn(response);
         })
         .catch((e) => {
           /* eslint-disable no-console */
           console.log(e);
           /* eslint-enable no-console */
         });
-    },
-    getDataforIndia() {
-      this.items[1].deaths = "Loading...";
-      this.items[1].recovered = "Loading...";
-      this.items[1].confirmed = "Loading...";
-      axios
-        .get(
-          "https://covid-19-coronavirus-statistics.p.rapidapi.com/v1/total",
-          {
-            params: {
-              country: "India",
-            },
-            headers: {
-              "x-rapidapi-key": process.env.VUE_APP_COVIDAPIKEY,
-              "x-rapidapi-host":
-                "covid-19-coronavirus-statistics.p.rapidapi.com",
-            },
-          }
-        )
-        .then((response) => {
-          if(response.data.data.deaths == null){
-            this.items[1].deaths = "N/A";
-          }
-          else{
-            this.items[1].deaths = response.data.data.deaths;
-          }
-
-          if(response.data.data.recovered == null){
-            this.items[1].recovered = "N/A";
-          }
-          else{
-            this.items[1].recovered = response.data.data.recovered;
-          }
-
-          if(response.data.data.confirmed == null){
-            this.items[1].confirmed = "N/A";
-          }
-          else{
-            this.items[1].confirmed = response.data.data.confirmed;
-          }
-        })
-        .catch((e) => {
-          /* eslint-disable no-console */
-          console.log(e);
-          /* eslint-enable no-console */
-        });
-    },
-    getDataforBrazil() {
-      this.items[2].deaths = "Loading...";
-      this.items[2].recovered = "Loading...";
-      this.items[2].confirmed = "Loading..."; 
-      axios
-        .get(
-          "https://covid-19-coronavirus-statistics.p.rapidapi.com/v1/total",
-          {
-            params: {
-              country: "Brazil",
-            },
-            headers: {
-              "x-rapidapi-key": process.env.VUE_APP_COVIDAPIKEY,
-              "x-rapidapi-host":
-                "covid-19-coronavirus-statistics.p.rapidapi.com",
-            },
-          }
-        )
-        .then((response) => {
-          if(response.data.data.deaths == null){
-            this.items[2].deaths = "N/A";
-          }
-          else{
-            this.items[2].deaths = response.data.data.deaths;
-          }
-
-          if(response.data.data.recovered == null){
-            this.items[2].recovered = "N/A";
-          }
-          else{
-            this.items[2].recovered = response.data.data.recovered;
-          }
-
-          if(response.data.data.confirmed == null){
-            this.items[2].confirmed = "N/A";
-          }
-          else{
-            this.items[2].confirmed = response.data.data.confirmed;
-          }
-        })
-        .catch((e) => {
-          /* eslint-disable no-console */
-          console.log(e);
-          /* eslint-enable no-console */
-        });
-    },
-    getDataforRussia() {
-      this.items[3].deaths = "Loading...";
-      this.items[3].recovered = "Loading...";
-      this.items[3].confirmed = "Loading...";
-      axios
-        .get(
-          "https://covid-19-coronavirus-statistics.p.rapidapi.com/v1/total",
-          {
-            params: {
-              country: "Russia",
-            },
-            headers: {
-              "x-rapidapi-key": process.env.VUE_APP_COVIDAPIKEY,
-              "x-rapidapi-host":
-                "covid-19-coronavirus-statistics.p.rapidapi.com",
-            },
-          }
-        )
-        .then((response) => {
-          if(response.data.data.deaths == null){
-            this.items[3].deaths = "N/A";
-          }
-          else{
-            this.items[3].deaths = response.data.data.deaths;
-          }
-
-          if(response.data.data.recovered == null){
-            this.items[3].recovered = "N/A";
-          }
-          else{
-            this.items[3].recovered = response.data.data.recovered;
-          }
-
-          if(response.data.data.confirmed == null){
-            this.items[3].confirmed = "N/A";
-          }
-          else{
-            this.items[3].confirmed = response.data.data.confirmed;
-          }
-        })
-        .catch((e) => {
-          /* eslint-disable no-console */
-          console.log(e);
-          /* eslint-enable no-console */
-        });
-    },
-    getDataforUK() {
-      this.items[4].deaths = "Loading...";
-      this.items[4].recovered = "Loading...";
-      this.items[4].confirmed = "Loading...";
-      axios
-        .get(
-          "https://covid-19-coronavirus-statistics.p.rapidapi.com/v1/total",
-          {
-            params: {
-              country: "UK",
-            },
-            headers: {
-              "x-rapidapi-key": process.env.VUE_APP_COVIDAPIKEY,
-              "x-rapidapi-host":
-                "covid-19-coronavirus-statistics.p.rapidapi.com",
-            },
-          }
-        )
-        .then((response) => {
-          if(response.data.data.deaths == null){
-            this.items[4].deaths = "N/A";
-          }
-          else{
-            this.items[4].deaths = response.data.data.deaths;
-          }
-
-          if(response.data.data.recovered == null){
-            this.items[4].recovered = "N/A";
-          }
-          else{
-            this.items[4].recovered = response.data.data.recovered;
-          }
-
-          if(response.data.data.confirmed == null){
-            this.items[4].confirmed = "N/A";
-          }
-          else{
-            this.items[4].confirmed = response.data.data.confirmed;
-          }
-        })
-        .catch((e) => {
-          /* eslint-disable no-console */
-          console.log(e);
-          /* eslint-enable no-console */
-        });
-    },
-    getDataforFrance() {
-      this.items[5].deaths = "Loading...";
-      this.items[5].recovered = "Loading...";
-      this.items[5].confirmed = "Loading...";
-      axios
-        .get(
-          "https://covid-19-coronavirus-statistics.p.rapidapi.com/v1/total",
-          {
-            params: {
-              country: "France",
-            },
-            headers: {
-              "x-rapidapi-key": process.env.VUE_APP_COVIDAPIKEY,
-              "x-rapidapi-host":
-                "covid-19-coronavirus-statistics.p.rapidapi.com",
-            },
-          }
-        )
-        .then((response) => {
-          if(response.data.data.deaths == null){
-            this.items[5].deaths = "N/A";
-          }
-          else{
-            this.items[5].deaths = response.data.data.deaths;
-          }
-
-          if(response.data.data.recovered == null){
-            this.items[5].recovered = "N/A";
-          }
-          else{
-            this.items[5].recovered = response.data.data.recovered;
-          }
-
-          if(response.data.data.confirmed == null){
-            this.items[5].confirmed = "N/A";
-          }
-          else{
-            this.items[5].confirmed = response.data.data.confirmed;
-          }
-        })
-        .catch((e) => {
-          /* eslint-disable no-console */
-          console.log(e);
-          /* eslint-enable no-console */
-        });
-    },
-    getDataforSpain() {
-      this.items[6].deaths = "Loading...";
-      this.items[6].recovered = "Loading...";
-      this.items[6].confirmed = "Loading...";
-      axios
-        .get(
-          "https://covid-19-coronavirus-statistics.p.rapidapi.com/v1/total",
-          {
-            params: {
-              country: "Spain",
-            },
-            headers: {
-              "x-rapidapi-key": process.env.VUE_APP_COVIDAPIKEY,
-              "x-rapidapi-host":
-                "covid-19-coronavirus-statistics.p.rapidapi.com",
-            },
-          }
-        )
-        .then((response) => {
-          if(response.data.data.deaths == null){
-            this.items[6].deaths = "N/A";
-          }
-          else{
-            this.items[6].deaths = response.data.data.deaths;
-          }
-
-          if(response.data.data.recovered == null){
-            this.items[6].recovered = "N/A";
-          }
-          else{
-            this.items[6].recovered = response.data.data.recovered;
-          }
-
-          if(response.data.data.confirmed == null){
-            this.items[6].confirmed = "N/A";
-          }
-          else{
-            this.items[6].confirmed = response.data.data.confirmed;
-          }
-        })
-        .catch((e) => {
-          /* eslint-disable no-console */
-          console.log(e);
-          /* eslint-enable no-console */
-        });
-    },
-    getDataforItaly() {
-      this.items[7].deaths = "Loading...";
-      this.items[7].recovered = "Loading...;";
-      this.items[7].confirmed = "Loading...";
-      axios
-        .get(
-          "https://covid-19-coronavirus-statistics.p.rapidapi.com/v1/total",
-          {
-            params: {
-              country: "Italy",
-            },
-            headers: {
-              "x-rapidapi-key": process.env.VUE_APP_COVIDAPIKEY,
-              "x-rapidapi-host":
-                "covid-19-coronavirus-statistics.p.rapidapi.com",
-            },
-          }
-        )
-        .then((response) => {
-          if(response.data.data.deaths == null){
-            this.items[7].deaths = "N/A";
-          }
-          else{
-            this.items[7].deaths = response.data.data.deaths;
-          }
-
-          if(response.data.data.recovered == null){
-            this.items[7].recovered = "N/A";
-          }
-          else{
-            this.items[7].recovered = response.data.data.recovered;
-          }
-
-          if(response.data.data.confirmed == null){
-            this.items[7].confirmed = "N/A";
-          }
-          else{
-            this.items[7].confirmed = response.data.data.confirmed;
-          }
-        })
-        .catch((e) => {
-          /* eslint-disable no-console */
-          console.log(e);
-          /* eslint-enable no-console */
-        });
-    },
-    getDataforTurkey() {
-      this.items[8].deaths = "Loading...";
-      this.items[8].recovered = "Loading...";
-      this.items[8].confirmed = "Loading...";
-      axios
-        .get(
-          "https://covid-19-coronavirus-statistics.p.rapidapi.com/v1/total",
-          {
-            params: {
-              country: "Turkey",
-            },
-            headers: {
-              "x-rapidapi-key": process.env.VUE_APP_COVIDAPIKEY,
-              "x-rapidapi-host":
-                "covid-19-coronavirus-statistics.p.rapidapi.com",
-            },
-          }
-        )
-        .then((response) => {
-          if(response.data.data.deaths == null){
-            this.items[8].deaths = "N/A";
-          }
-          else{
-            this.items[8].deaths = response.data.data.deaths;
-          }
-
-          if(response.data.data.recovered == null){
-            this.items[8].recovered = "N/A";
-          }
-          else{
-            this.items[8].recovered = response.data.data.recovered;
-          }
-
-          if(response.data.data.confirmed == null){
-            this.items[8].confirmed = "N/A";
-          }
-          else{
-            this.items[8].confirmed = response.data.data.confirmed;
-          }
-        })
-        .catch((e) => {
-          /* eslint-disable no-console */
-          console.log(e);
-          /* eslint-enable no-console */
-        });
-    },
-    getDataforIreland() {
-      this.items[9].deaths = "Loading...";
-      this.items[9].recovered = "Loading...";
-      this.items[9].confirmed = "Loading...";
-      axios
-        .get(
-          "https://covid-19-coronavirus-statistics.p.rapidapi.com/v1/total",
-          {
-            params: {
-              country: "Ireland",
-            },
-            headers: {
-              "x-rapidapi-key": process.env.VUE_APP_COVIDAPIKEY,
-              "x-rapidapi-host":
-                "covid-19-coronavirus-statistics.p.rapidapi.com",
-            },
-          }
-        )
-        .then((response) => {
-          if(response.data.data.deaths == null){
-            this.items[9].deaths = "N/A";
-          }
-          else{
-            this.items[9].deaths = response.data.data.deaths;
-          }
-
-          if(response.data.data.recovered == null){
-            this.items[9].recovered = "N/A";
-          }
-          else{
-            this.items[9].recovered = response.data.data.recovered;
-          }
-
-          if(response.data.data.confirmed == null){
-            this.items[9].confirmed = "N/A";
-          }
-          else{
-            this.items[9].confirmed = response.data.data.confirmed;
-          }
-        })
-        .catch((e) => {
-          /* eslint-disable no-console */
-          console.log(e);
-          /* eslint-enable no-console */
-        });
-    },
+    },      
     nextPage() {
       if (this.page + 1 <= this.numberOfPages) {
         this.page += 1;
@@ -693,16 +206,7 @@ export default {
     },
   },
     created() {
-    this.getDataforUSA();
-    this.getDataforIndia();
-    this.getDataforBrazil();
-    this.getDataforRussia();
-    this.getDataforUK();
-    this.getDataforFrance();
-    this.getDataforSpain();
-    this.getDataforItaly();
-    this.getDataforTurkey();
-    this.getDataforIreland();
+      this.getData();
   },
 };
 </script>

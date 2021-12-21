@@ -9,7 +9,7 @@
         <p style="color:white;" class="headline">Following : {{ info.following }}</p>
         <p style="color:white;" class="headline">Account created : {{ info.creation }}</p>
         <!-- After pressing the "Get Data" button, we want to update the data shown. -->
-        <v-btn @click="getData">Get Data</v-btn>
+        <v-btn @click="goToHome">GitHub Account</v-btn>
       </v-col>
     </v-row>
   </v-card>
@@ -25,7 +25,8 @@ export default {
       name: "...",
       followers: "...",
       following: "...",
-      creation: "..."
+      creation: "...",
+      github: "..."
     },
     object: null,
   }),
@@ -46,7 +47,8 @@ export default {
           this.info.followers = response.data[0].Followers;
           this.info.following = response.data[0].Following;
           this.info.creation = (response.data[0].AccountCreation).substring(8,10) + "/" + (response.data[0].AccountCreation).substring(5,7) + "/" +  (response.data[0].AccountCreation).substring(0,4);
-          console.warn(response);
+          this.info.github = response.data[0].GitHubAccountURL;
+          //console.warn(response);
         })
         .catch((e) => {
           /* eslint-disable no-console */
@@ -54,6 +56,9 @@ export default {
           /* eslint-enable no-console */
         });
     },
+    goToHome(){
+    window.location.href = this.info.github;
+      }
   },
   created() {
     this.getData();
