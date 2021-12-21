@@ -12,12 +12,12 @@
       </v-card-text>
       <!-- We can now show some basic information about the application -->
       <v-card-text class="white--text">
-        This application allows you to keep up to date with the latest COVID-19 information from a <a style="color:white;" href="https://rapidapi.com/KishCom/api/covid-19-coronavirus-statistics">COVID-19 API</a> and a <a style="color:white;" href="https://rapidapi.com/aldair.sr99/api/world-population">Country Population API</a>. You can find statistical information on the <a style="color:white;" href="\">Home Page</a> and You can find visual information on the <a style="color:white;" href="\stats">Statistics Page</a> . Further information can be found at <a  href="https://www2.hse.ie/coronavirus/" style="color:white;" >the Offical HSE Website</a>.
+        This application allows you to visualize information from a GitHub User using the official <a style="color:white;" href="https://docs.github.com/en/rest">GitHub API</a>. This project was completed for the module <a style="color:white;" href="https://teaching.scss.tcd.ie/module/csu33012-software-engineering/">Software Engineering Project</a> taken during the 3rd year of Computer Science at Trinity College Dublin. You can find data on the <a style="color:white;" href="\">Home Page</a> and visualizations on the <a style="color:white;" href="\stats">Statistics Page</a>.
       </v-card-text>
       <v-divider></v-divider>
       <!-- Now we can finish the footer with some final text -->
       <v-card-text class="white--text">
-        &copy;{{ new Date().getFullYear() }} <strong>Copyright <a style="color:white;" href="https://github.com/dabreadman/Node-Podman-OpenShift-CI-CD"> Group 39 - Software Engineering  Project</a> </strong>
+        &copy;{{ new Date().getFullYear() }} <strong>Copyright <a style="color:white;" href="https://github.com/saisankp"> Prathamesh Sai Sankar</a> </strong>
       </v-card-text>
     </v-card>
   </v-footer>
@@ -31,7 +31,7 @@
       {
         id: 1,
         icon: "mdi-github",
-        url: "https://github.com/dabreadman/Node-Podman-OpenShift-CI-CD",
+        url: "https://github.com/saisankp/GitHub-Access",
       },
     ],
   }),

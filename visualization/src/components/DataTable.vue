@@ -58,8 +58,11 @@
             lg="3"
           >
             <v-card>
-              <v-card-title class="subheading font-weight-bold">
-                {{ item.name }}
+              <v-card-title>
+                <font size="2.5" align="centre">
+                   {{ item.name }}
+                  </font>
+               
               </v-card-title>
               <v-divider></v-divider>
               <v-list dense>

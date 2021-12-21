@@ -1,139 +1,99 @@
 <!-- This Vue component will act as the statistics page to show visual information to the user. -->
 <template lang="html">
   <v-container class="py-12 height_class">
-    <v-col align="center">
-      <!-- We have a basic title here to show before the visualization. -->
-        <b><h3 class="display-1 py-6" style="color:black;">Visualize the impact of COVID-19.</h3></b>
-        <br />
-        <!-- This multiselect allows the user to pick a country to visualize. -->
-        <div style="width:50%; align:center;">
-            <multiselect
-            :options="options"
-             v-model="selected">
-            </multiselect>
-       </div>
-       <br />
-       <!-- The button below allows the user to render the graph and see the latest information. -->
-       <v-btn @click="getData(); getPopulation();">Render Latest Information</v-btn>
-    </v-col>
 
-    <!-- Now we can make the bar chart with the help of the information from the API calls. -->
-    <zingchart :data=" { type: 'bar', title: { text: 'Covid-19 Visualization for '.concat(this.selected), }, scaleX: { labels: ['Deaths', 'Recovered Cases', 'Confirmed Cases'] }, plotarea: { marginLeft:'dynamic', marginRight:'dynamic' }}" :series="[{values: [this.stats.deaths,this.stats.recovered,this.stats.confirmed,]}]" ></zingchart>
-    <!-- Now we can have one line to further describe the information we have at our disposal. -->
-    <v-col align="center">
-        <p style="align: center;">In the location of <u>{{this.selected}}</u> with a total population of <u>{{this.stats.population }}</u> there has been a reported death count of <u>{{ this.stats.deaths}}</u>, the number of recovered cases is said to be <u>{{ this.stats.recovered}}</u> and the number of confirmed cases has reached <u>{{ this.stats.confirmed}}</u>.</p>
-    </v-col>
-    <br />
     <!-- Now we can make the pie chart with the help of the information from the API calls. -->
-    <zingchart :data="secondPlot" :series="[{ values: [this.stats.population-this.stats.recovered-this.stats.confirmed], text: 'Uninfected Population', backgroundColor: '#4CD77A', detached: true }, { values: [this.stats.confirmed] , text: 'Currently Infected Population',  backgroundColor: '#FF0000', detached: true }, { values: [this.stats.recovered], text: 'Recovered Population', backgroundColor: '#B600FF', detached: true}]"></zingchart>
+    <zingchart :data="chartConfig" :series="[{ values: this.mydata}]"></zingchart>
   </v-container>
 </template>
 
 <script>
-//We need ZingChart for the charts and Multiselect for the drop down menu.
 import "zingchart";
 import zingchartVue from "zingchart-vue";
-import Multiselect from "vue-multiselect";
 import axios from "axios";
+//[[0,1], [1,2], [2,3], [4,5], [5,6]]
+
+
 export default {
+  components: {
+    zingchart: zingchartVue,
+  },
   data() {
-        return {
-          //This second plot will be for the pie chart. It is here because we do not need to include any API information for the "data" but we do for the "series".
-            secondPlot: {
-                type: "pie3d",
-                legend: {
-                  align: "right",
-                },
-                title: {
-                  text: "Population statistics",
-                },
-                scaleX: {
-                  labels: ["Deaths", "Recovered Cases", "Confirmed Cases"]
-                },
-                plotarea: {
-                  marginTop:"dynamic",
-                  marginLeft:"dynamic",
-                  marginRight:"dynamic"
-                }
-            },
-            //These statistics are initialized to be N/A for now. They will be updated by the API call.
-            stats: {
-                 recovered: "N/A",
-                 deaths: "N/A",
-                 confirmed: "N/A",
-                 population: "N/A"
-            },
-            //Make the default country Brazil, but the user can change this.
-            selected: "Brazil",
-            //We have options for the drop down menu.
-            options: ["Brazil", "France", "India", "Ireland", "Italy", "Russia", "Spain", "Turkey", "UK", "USA"],
-            };
-    },
-    components: {
-      //We have two components, the charts and the multiselect drop down menu.
-        zingchart: zingchartVue,
-        Multiselect
+    return {
+      mydata : [],
+      chartConfig: {
+        type: "line",
+        title: {
+          text: "Increase in Number of Forks with Number of Commits",
+        },
+        plot : {
+        animation: {
+              "effect": "ANIMATION_FADE_IN",
+              "speed": "15000",
+              "method": "5",
+              "sequence": "1"
+        },
+        },
+        // series: [
+        //   {
+        //     values: mydata
+        //   },
+        // ],
+        scaleX: {
+          label: { /*Add a scale title with a label object*/
+            text: "Commits",
+        },
+        },
+        scaleY: {
+          label: { /*Add a scale title with a label object*/
+            text: "Forks",
+        },
+
+        },
+      },
+    };
   },
-  methods: {
-    getData() {
-      //An API call for COVID-19 information.
+    methods: {
+        getData(){
       axios
         .get(
-          "https://covid-19-coronavirus-statistics.p.rapidapi.com/v1/total",
+          "http://localhost:8080/repo",
           {
-            params: {
-              country: this.selected,
-            },
             headers: {
-              "x-rapidapi-key": process.env.VUE_APP_COVIDAPIKEY,
-              "x-rapidapi-host":
-                "covid-19-coronavirus-statistics.p.rapidapi.com",
+
             },
           }
         )
         .then((response) => {
-          this.stats.recovered = response.data.data.recovered;
-          this.stats.deaths = response.data.data.deaths;
-          this.stats.confirmed = response.data.data.confirmed;
+          const numberOfRepos = Object.keys(response.data).length;
+          for(var i = 0; i < numberOfRepos; i++){
+            if(response.data[i].NumberOfCommits < 2000){
+this.mydata.push([response.data[i].NumberOfCommits,response.data[i].NumberOfWatchers]);
+            }
+            
+            //this.items[i].name = response.data[i].RepositoryName;
+          }
+          console.warn("hi");
+          console.warn(this.mydata)
+          //this.mydata.push([6,7]);
+          // console.warn(add)
+           console.warn(response);
         })
         .catch((e) => {
           /* eslint-disable no-console */
           console.log(e);
           /* eslint-enable no-console */
         });
-    },
-    getPopulation() {
-      //An API call for country population information.
-      axios
-        .get(
-          "https://world-population.p.rapidapi.com/population",
-          {
-            params: {
-              /* eslint-disable */
-              country_name : this.selected,
-              /* eslint-enable  */
-            },
-            headers: {
-              "x-rapidapi-key": process.env.VUE_APP_POPULATIONAPIKEY,
-              "x-rapidapi-host": "world-population.p.rapidapi.com",
-            },
-          }
-        )
-        .then((response) => {
-          this.stats.population = response.data.body.population;
-        })
-        .catch((e) => {
-          /* eslint-disable no-console */
-          console.log(e);
-          /* eslint-enable no-console */
-        });
-    },
-  },
-  created() {
+        }
+        },
+
+
+        created() {
     this.getData();
-    this.getPopulation();
   },
 };
+
+// mydata.push(add);
 </script>
 
 <style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
