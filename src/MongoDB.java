@@ -59,13 +59,21 @@ public class MongoDB {
 			mongoDocument.append("RepositoryName", repo.getName());
 			HashMap<String, List<String>> hm = new HashMap<>();
 			List<String> list = new ArrayList<>();
-			List<RepositoryCommit> repoCommits = commitService.getCommits(repo);
+			List<RepositoryCommit> repoCommits = null;
+			try {
+				repoCommits = commitService.getCommits(repo);
+			} catch (Exception e) {
+				
+			}
+			
 			int numberOfCommits = 0;
-			for(RepositoryCommit commit : repoCommits) {				
-				list = hm.getOrDefault(commit.getCommit().getAuthor().getName(), new ArrayList<>());
-				list.add(commit.getCommit().getMessage().toString());
-				hm.put(commit.getCommit().getAuthor().getName(), list);
-				numberOfCommits++;
+			if(repoCommits != null) {
+				for(RepositoryCommit commit : repoCommits) {				
+					list = hm.getOrDefault(commit.getCommit().getAuthor().getName(), new ArrayList<>());
+					list.add(commit.getCommit().getMessage().toString());
+					hm.put(commit.getCommit().getAuthor().getName(), list);
+					numberOfCommits++;
+				}
 			}
 			//mongoDocument.append("Commits", hm);
 			mongoDocument.append("NumberOfCommits", numberOfCommits);
