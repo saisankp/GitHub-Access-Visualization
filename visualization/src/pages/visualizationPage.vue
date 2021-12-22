@@ -3,7 +3,7 @@
   <v-container class="py-12 height_class">
     <v-col align="center">
       <!-- We have a basic title here to show before the visualization. -->
-        <b><h3 class="display-1 py-6" style="color:black;">User specific information.</h3></b>
+        <b><h3 class="display-1 py-6" style="color:black;">Visualize user specific information.</h3></b>
         <br />
          <zingchart :data="pieConfig" :series="this.mydata3"></zingchart>
          <zingchart :data="followerConfig" :series="[{ values: this.mydata4}]"></zingchart>   
@@ -11,7 +11,7 @@
 
 
 
-        <b><h3 class="display-1 py-6" style="color:black;">Repository specific information.</h3></b>
+        <b><h3 class="display-1 py-6" style="color:black;">Visualize repository specific information.</h3></b>
                 <br />
         <!-- This multiselect allows the user to pick a country to visualize. -->
         <div style="width:50%; align:center;">
@@ -212,7 +212,7 @@ pieConfig: {
           this.mydata = [];
           const numberOfRepos = Object.keys(response.data).length;
           const percent =  parseInt(this.selected.substring(0, 4).match(/\d|\.|-/g).join('')) / 100;
-          console.warn(percent);
+          
           for(var i = 0; i < numberOfRepos*percent; i++){
             //if(response.data[i].NumberOfCommits < numberOfRepos / 10 ){
 this.mydata.push([response.data[i].NumberOfCommits,response.data[i].NumberOfForks]);
@@ -221,11 +221,10 @@ this.mydata.push([response.data[i].NumberOfCommits,response.data[i].NumberOfFork
             //this.items[i].name = response.data[i].RepositoryName;
           }
          
-          console.warn("hi");
-          console.warn(this.mydata)
+  
           //this.mydata.push([6,7]);
           // console.warn(add)
-           console.warn(response);
+        
 
           this.mydata2 = [];
           for(var j = 0; j < numberOfRepos*percent; j++){
@@ -248,7 +247,7 @@ this.mydata.push([response.data[i].NumberOfCommits,response.data[i].NumberOfFork
           this.mydata3 = [];
           //Now map1 has all the languages as keys, and the number of commits as values.
           map.delete(null);
-          console.warn(map);
+        
           for (const [key, value] of map) {
             this.mydata3.push({
              
@@ -259,7 +258,7 @@ this.mydata.push([response.data[i].NumberOfCommits,response.data[i].NumberOfFork
 
           }
 
-          console.warn(this.mydata3);
+         
 
 
         })

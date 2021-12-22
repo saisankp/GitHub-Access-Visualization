@@ -4,9 +4,8 @@
     const { MongoClient } = require("mongodb");
     const dotenv = require('dotenv');
     dotenv.config({ path: './.env' });
-    console.warn(process.env.MONGO_USERNAME);
     const uri = "mongodb+srv://" + process.env.MONGO_USERNAME + ":" + process.env.MONGO_PASSWORD + "@cluster0.yidvg.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
-    console.warn("Server running on port 8081 with data for the application. Now we can run the application locally in this docker container.");
+    console.warn("Server running on port 8081 with data for the application. Now we can run the application on port 8080 in this docker container.");
     const client = new MongoClient(uri);
     var value = 0;
     var value2 = 0;
