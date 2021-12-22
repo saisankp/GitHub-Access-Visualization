@@ -1,4 +1,6 @@
 
+    var util= require('util');
+    var encoder = new util.TextEncoder('utf-8');
     const { MongoClient } = require("mongodb");
     const dotenv = require('dotenv');
     dotenv.config({ path: '../.env' });
@@ -35,8 +37,8 @@
         const movie = movies.find();
         const results = await movie.toArray();
         value = results;
-        return results;
       } finally {
+        console.log(e);
       }
     }
     run().catch(console.dir);
@@ -50,8 +52,8 @@
           const movie = movies.find();
           const results = await movie.toArray();
           value2 = results;
-          return results;
-        } finally {
+        } catch (e) {
+          console.log(e);
         }
       }
 run2().catch(console.dir);

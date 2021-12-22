@@ -14,10 +14,10 @@ describe("Test the root path", () => {
   });
 });
 
-describe("Test the path to stats page", () => {
+describe("Test the path to visualization page", () => {
   test("Response to the GET method", async (done) => {
     request(app)
-      .get("/stats")
+      .get("/visualization")
       .then((response) => {
         expect(response.statusCode).toBe(200);
         done();
