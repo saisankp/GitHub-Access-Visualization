@@ -1,56 +1,52 @@
-<!-- This Vue component will act as the statistics page to show visual information to the user. -->
+<!-- This Vue component will act as the visualization page to show visual information from the GitHub API's data to the user. -->
 <template lang="html">
   <v-container class="py-12 height_class">
     <v-col align="center">
-      <!-- We have a basic title here to show before the visualization. -->
+        <!-- We have a basic title here to show before the user specific visualization. -->
         <b><h3 class="display-1 py-6" style="color:black;">Visualize user specific information.</h3></b>
-        <br />
-         <zingchart :data="pieConfig" :series="this.mydata3"></zingchart>
-         <zingchart :data="followerConfig" :series="[{ values: this.mydata4}]"></zingchart>   
-
-
-
-
+        <br/>
+        <!--This visualization with show a pie chart of all the languages used by the chosen user along with their associated total commits. -->
+        <zingchart :data="pieConfig" :series="this.languagesAndCommits"></zingchart>
+        <!--This visualization with show a bar chart containing the number of followers the chosen user follows, and the number of followers the chosen user has. -->
+        <zingchart :data="followerConfig" :series="[{ values: this.followersAndFollowing}]"></zingchart>
+        <!-- We have a basic title here to show before the repository specific visualization. -->   
         <b><h3 class="display-1 py-6" style="color:black;">Visualize repository specific information.</h3></b>
-                <br />
-        <!-- This multiselect allows the user to pick a country to visualize. -->
+        <br/>
+        <!-- This multiselect allows the user to pick the amount of repositories to visualize. -->
         <div style="width:50%; align:center;">
             <multiselect
             :options="options"
              v-model="selected">
             </multiselect>
        </div>
-       <br />
-       <!-- The button below allows the user to render the graph and see the latest information. -->
-       <v-btn @click="getData(); getData2()">Visualize Query</v-btn>
+       <br/>
+       <!-- The button below allows the user to render the visualizations after their query. -->
+       <v-btn @click="setRepoData(); setUserData()">Visualize Query</v-btn>
     </v-col>
 
-    <!-- Now we can make the bar chart with the help of the information from the API calls. -->
-    
-    <!-- Now we can have one line to further describe the information we have at our disposal. -->
+    <!-- Now we can have one line to describe the query from the user before visualizing the data. -->
     <v-col align="center">
       <br>
         <p style="align: center;">We are now analyzing <u>{{this.selected}}</u> of the user sorted by name to gather statistics and information about various data.</p>
     </v-col>
-    <!-- Now we can make the pie chart with the help of the information from the API calls. -->
-   
 
+    <!-- Now we can make the 3d bar chart with the help of the information from the API calls. -->
+    <zingchart :data="chartConfig" :series="[{ values: this.forksAndCommits}]"></zingchart>
 
-    <!-- Now we can make the pie chart with the help of the information from the API calls. -->
-    <zingchart :data="chartConfig" :series="[{ values: this.mydata}]"></zingchart>
-        <v-col align="center">
+    <!-- Now we can have one line to describe the visualization above. -->
+    <v-col align="center">
         <p style="align: center;">We can see above that there is a general trend of a spike in forks as the commits increases initially, but then it tends to taper off as the commits increase. This is seen clearly if we increase the repositories shown to 100%.</p>
     </v-col>
     <br>
-    <zingchart :data="chart2Config" :series="[{ values: this.mydata2}]"></zingchart>
 
-    
-     <v-col align="center">
+    <!-- Now we can make the 3d bar chart with the help of the information from the API calls. -->
+    <zingchart :data="chart2Config" :series="[{ values: this.sizeAndForks}]"></zingchart>
+
+    <!-- Now we can have one line to describe the visualization above. -->
+    <v-col align="center">
     <p style="align: center;">We see a similar pattern above where there is a spike in the size of a repository as the numbers of forks increases initially, but it also tends to taper off as the number of forks increase. This is seen clearly if we increase the repositories shown to 100%.</p>
     </v-col>
     <br>
-
-
   </v-container>
 </template>
 
@@ -59,9 +55,6 @@ import "zingchart";
 import zingchartVue from "zingchart-vue";
 import axios from "axios";
 import Multiselect from "vue-multiselect";
-//[[0,1], [1,2], [2,3], [4,5], [5,6]]
-
-
 export default {
   components: {
     zingchart: zingchartVue,
@@ -69,10 +62,10 @@ export default {
   },
   data() {
     return {
-      mydata : [],
-      mydata2 : [],
-      mydata3 : [],
-      mydata4 : [],
+      forksAndCommits : [],
+      sizeAndForks : [],
+      languagesAndCommits : [],
+      followersAndFollowing : [],
       done : 0,
       chartConfig: {
         type: "bar3d",
@@ -81,9 +74,9 @@ export default {
           marginTop:"dynamic",
         },
         plotarea: {
-    margin:'dynamic',
-    marginTop:"-10%",
-  },
+        margin:'dynamic',
+        marginTop:"-10%",
+        },
         plot : {
         animation: {
               "effect": "ANIMATION_FADE_IN",
@@ -96,11 +89,6 @@ export default {
         },
         
         },
-        // series: [
-        //   {
-        //     values: mydata
-        //   },
-        // ],
         scaleX: {
           label: { /*Add a scale title with a label object*/
             text: "Commits",
@@ -113,21 +101,17 @@ export default {
             text: "Forks",
             'font-size': "20",
         },
-
-
         },
       },
-            chart2Config: {
+      chart2Config: {
         type: "bar3d",
         title: {
           text: "Increase in Size of a repository (KB) with Number of Forks" + "\n" + "\n",
-          
         },
         plotarea: {
-    margin:'dynamic',
-    marginTop:"-10%",
-
-  },
+          margin:'dynamic',
+          marginTop:"-10%",
+        },
         plot : {
         animation: {
               "effect": "ANIMATION_FADE_IN",
@@ -138,104 +122,75 @@ export default {
         "tooltip": {
               "text": "This repository has %kt Forks (X) and a Size of %vt KB (Y)."
         },
-        
         },
-        // series: [
-        //   {
-        //     values: mydata
-        //   },
-        // ],
         scaleX: {
-          label: { /*Add a scale title with a label object*/
+          label: {
             text: "Forks",
             'font-size': "20",
         },
-
         },
         scaleY: {
-          label: { /*Add a scale title with a label object*/
+          label: {
             text: "Size (KB)",
             'font-size': "20",
         },
-
-
         },
       },
-pieConfig: {
-                type: "pie3d",
-                legend: {
-                   marginTop:"-15%",
-                },
-                title: {
-                  text: "All languages used in repositories with their associated total commits",
-                  align: "center",
-                },
-                plotarea: {
-                  marginTop:"dynamic",
-                  marginLeft:"dynamic",
-                  marginRight:"dynamic"
-                },
-            },
-
-            followerConfig: {
-              type: 'bar', 
-              title: { 
-                text: 'Followers vs Following', 
-                }, 
-                scaleX: { 
-                  labels: ['Followers', 'Following'] 
-                  }, 
-                  plotarea: { 
-                    marginLeft:'dynamic', 
-                    marginRight:'dynamic' 
-                  },
-            },
-      //Make the default country Brazil, but the user can change this.
-            selected: "10% of repositories",
-            //We have options for the drop down menu.
-            options: ["10% of repositories", "20% of repositories", "30% of repositories", "40% of repositories", "50% of repositories", "60% of repositories", "70% of repositories", "80% of repositories", "90% of repositories", "100% of repositories"],
-            
+      pieConfig: {
+        type: "pie3d",
+        legend: {
+          marginTop:"-15%",
+        },
+        title: {
+          text: "All languages used in repositories with their associated total commits",
+          align: "center",
+        },                
+        plotarea: {
+          marginTop:"dynamic",
+          marginLeft:"dynamic",
+          marginRight:"dynamic"
+          },
+      },
+        followerConfig: {
+         type: 'bar', 
+         title: { 
+            text: 'Followers vs Following', 
+          }, 
+         scaleX: { 
+            labels: ['Followers', 'Following'] 
+          }, 
+          plotarea: { 
+            marginLeft:'dynamic', 
+            marginRight:'dynamic' 
+          },
+       },
+    //Make the default amount 10% of repositories, but the user can change this.
+      selected: "10% of repositories",
+      //We have options for the drop down menu.
+      options: ["10% of repositories", "20% of repositories", "30% of repositories", "40% of repositories", "50% of repositories", "60% of repositories", "70% of repositories", "80% of repositories", "90% of repositories", "100% of repositories"],
     };
   },
     methods: {
-        getData(){
+        setRepoData(){
       axios
-        .get(
-          "http://localhost:8081/repo",
-          {
-            headers: {
-
-            },
-          }
-        )
+        .get("http://localhost:8081/repo")
         .then((response) => {
-          this.mydata = [];
+
+          //Set data for forks and commits graph.
+          this.forksAndCommits = [];
           const numberOfRepos = Object.keys(response.data).length;
           const percent =  parseInt(this.selected.substring(0, 4).match(/\d|\.|-/g).join('')) / 100;
-          
           for(var i = 0; i < numberOfRepos*percent; i++){
-            //if(response.data[i].NumberOfCommits < numberOfRepos / 10 ){
-this.mydata.push([response.data[i].NumberOfCommits,response.data[i].NumberOfForks]);
-  // }
-            
-            //this.items[i].name = response.data[i].RepositoryName;
+            this.forksAndCommits.push([response.data[i].NumberOfCommits,response.data[i].NumberOfForks]);
           }
-         
-  
-          //this.mydata.push([6,7]);
-          // console.warn(add)
-        
 
-          this.mydata2 = [];
+          //Set data for size and forks graph.
+          this.sizeAndForks = [];
           for(var j = 0; j < numberOfRepos*percent; j++){
-            //if(response.data[i].NumberOfCommits < numberOfRepos / 10 ){
-            this.mydata2.push([response.data[j].NumberOfForks,response.data[j].Size]);
+            this.sizeAndForks.push([response.data[j].NumberOfForks,response.data[j].Size]);
           }
-
           const map = new Map();
           for(var z = 0; z < numberOfRepos; z++){
-            //if(response.data[i].NumberOfCommits < numberOfRepos / 10 ){
-            //this.mydata2.push([response.data[j].NumberOfForks,response.data[j].Size]);
             if(map.has(response.data[z].Language)){
               map.set(response.data[z].Language, response.data[z].NumberOfCommits + map.get(response.data[z].Language));
             }
@@ -244,23 +199,15 @@ this.mydata.push([response.data[i].NumberOfCommits,response.data[i].NumberOfFork
             }
           }
 
-          this.mydata3 = [];
-          //Now map1 has all the languages as keys, and the number of commits as values.
+          //Set data for language and commits graph.
+          this.languagesAndCommits = [];
           map.delete(null);
-        
           for (const [key, value] of map) {
-            this.mydata3.push({
-             
+            this.languagesAndCommits.push({
               text: key.toString() + " (" + value + " commits)",
                values: [value],
-              //detached: true
             });
-
           }
-
-         
-
-
         })
         .catch((e) => {
           /* eslint-disable no-console */
@@ -268,20 +215,14 @@ this.mydata.push([response.data[i].NumberOfCommits,response.data[i].NumberOfFork
           /* eslint-enable no-console */
         });
         },
-    getData2(){
+    setUserData(){
       axios
-        .get(
-          "http://localhost:8081/userdata",
-          {
-            headers: {
-
-            },
-          }
-        )
+        .get("http://localhost:8081/userdata")
         .then((response) => {
-          this.mydata4 = [];
-          this.mydata4.push(response.data[0].Followers);
-          this.mydata4.push(response.data[0].Following);
+          //Set data for followers and following bar chart.
+          this.followersAndFollowing = [];
+          this.followersAndFollowing.push(response.data[0].Followers);
+          this.followersAndFollowing.push(response.data[0].Following);
         })
         .catch((e) => {
           /* eslint-disable no-console */
@@ -290,16 +231,11 @@ this.mydata.push([response.data[i].NumberOfCommits,response.data[i].NumberOfFork
         });
         }
         },
-        
-
-
-        created() {
-    this.getData();
-    this.getData2();
+  created() {
+    this.setRepoData();
+    this.setUserData();
   },
 };
-
-// mydata.push(add);
 </script>
 
 <style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
