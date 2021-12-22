@@ -1,5 +1,5 @@
-<!-- This Vue component will act as a data table to show general COVID-19 Information for many different countries. -->
-<!-- This Vue component was developed with the help of Vuetify, and allows the user to digest general COVID-19 information with a table. -->
+<!-- This Vue component will act as a data table to show all the repositories of the chosen user, including information about each repository. -->
+<!-- This Vue component was developed with the help of Vuetify, and allows the user to get repository information with a table. -->
 <template lang="html">
   <v-container fluid>
     <!-- We want to iterate through all the data -->
@@ -35,7 +35,7 @@
               label="Sort by"
             ></v-select>
             <v-spacer></v-spacer>
-            <!-- We want the user to be able to toggle between the countries to view different information. -->
+            <!-- We want the user to be able to toggle between the repositories to view different information. -->
             <v-btn-toggle v-model="sortDesc" mandatory>
               <v-btn large depressed color="blue" :value="false">
                 <v-icon>mdi-arrow-up</v-icon>
@@ -136,7 +136,7 @@
 <script>
 import axios from "axios";
 export default {
-  //We can make most of the data null before the API calls.
+  //We can make most of the data null before the API calls to port 8081 which contains all the data from the MongoDB Atlas database.
   data() {
     return {
       itemsPerPageArray: [4, 8, 12],
@@ -161,18 +161,11 @@ export default {
   methods: {   
     getData() {
       axios
-        .get(
-          "http://localhost:8081/repo",
-          {
-            headers: {
-
-            },
-          }
-        )
+        .get("http://localhost:8081/repo")
         .then((response) => {
           const numberOfRepos = Object.keys(response.data).length;
+          //Now we can iterate through all repositories and push this information into the array which will have the contents of the table.
           for(var i = 0; i < numberOfRepos; i++){
-            //this.items[i].name = response.data[i].RepositoryName;
             if(response.data[i].RepositoryName != null){
             this.items.push(
               {
@@ -184,7 +177,6 @@ export default {
               },
             );
             }
-
           }
         })
         .catch((e) => {
@@ -212,5 +204,4 @@ export default {
   },
 };
 </script>
-
 <style lang="css" scoped></style>
