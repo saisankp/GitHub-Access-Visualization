@@ -37,7 +37,7 @@
         const movie = movies.find();
         const results = await movie.toArray();
         value = results;
-      } finally {
+      } catch (e) {
         console.log(e);
       }
     }
