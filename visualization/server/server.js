@@ -1,14 +1,13 @@
 
-const services= require("./services.js")
+let services= require("./services.js")
 let express = require("express");
 let serveStatic = require("serve-static");
 let history = require("connect-history-api-fallback");
-const cors = require('cors');
+let cors = require('cors');
 let app = express();
-const dotenv = require('dotenv');
+let dotenv = require('dotenv');
 dotenv.config({ path: '../.env' });
 const { MongoClient } = require("mongodb");
-// Replace the uri string with your MongoDB deployment's connection string.
 const uri = "mongodb+srv://" + process.env.MONGO_USERNAME + ":" + process.env.MONGO_PASSWORD + "@cluster0.yidvg.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
 const client = new MongoClient(uri);
 app.get('/repo', services.mongodbcall);

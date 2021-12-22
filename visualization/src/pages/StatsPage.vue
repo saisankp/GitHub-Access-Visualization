@@ -3,7 +3,7 @@
   <v-container class="py-12 height_class">
     <v-col align="center">
       <!-- We have a basic title here to show before the visualization. -->
-        <b><h3 class="display-1 py-6" style="color:black;">Let's visualize this user's information.</h3></b>
+        <b><h3 class="display-1 py-6" style="color:black;">User specific information.</h3></b>
         <br />
          <zingchart :data="pieConfig" :series="this.mydata3"></zingchart>
          <zingchart :data="followerConfig" :series="[{ values: this.mydata4}]"></zingchart>   
@@ -11,7 +11,8 @@
 
 
 
-
+        <b><h3 class="display-1 py-6" style="color:black;">Repository specific information.</h3></b>
+                <br />
         <!-- This multiselect allows the user to pick a country to visualize. -->
         <div style="width:50%; align:center;">
             <multiselect
@@ -21,7 +22,7 @@
        </div>
        <br />
        <!-- The button below allows the user to render the graph and see the latest information. -->
-       <v-btn @click="getData();">Visualize Query</v-btn>
+       <v-btn @click="getData(); getData2()">Visualize Query</v-btn>
     </v-col>
 
     <!-- Now we can make the bar chart with the help of the information from the API calls. -->
@@ -71,20 +72,8 @@ export default {
       mydata : [],
       mydata2 : [],
       mydata3 : [],
-      mydata4 : [
-        {
-          text: 'Christopher',
-          value: '675'
-        },
-        {
-          text: 'Aaron',
-          value: '50'
-        },
-        {
-          text: 'Nick',
-          value: '275'
-        }
-      ],
+      mydata4 : [],
+      done : 0,
       chartConfig: {
         type: "bar3d",
         title: {
@@ -189,37 +178,17 @@ pieConfig: {
             },
 
             followerConfig: {
-                type: "gauge",
-                  globals: {
-    fontSize: 25
-  },
-  plotarea: {
-    marginTop: 80
-  },
-  plot: {
-    size: '100%',
-    valueBox: {
-      placement: 'center',
-      text: '%v', //default
-      fontSize: 35,
-      rules: [{
-          rule: '%v >= 700',
-          text: '%v<br>EXCELLENT'
-        },
-        {
-          rule: '%v < 700 && %v > 640',
-          text: '%v<br>Good'
-        },
-        {
-          rule: '%v < 640 && %v > 580',
-          text: '%v<br>Fair'
-        },
-        {
-          rule: '%v <  580',
-          text: '%v<br>Bad'
-        }
-      ]
-    }}
+              type: 'bar', 
+              title: { 
+                text: 'Followers vs Following', 
+                }, 
+                scaleX: { 
+                  labels: ['Followers', 'Following'] 
+                  }, 
+                  plotarea: { 
+                    marginLeft:'dynamic', 
+                    marginRight:'dynamic' 
+                  },
             },
       //Make the default country Brazil, but the user can change this.
             selected: "10% of repositories",
@@ -276,6 +245,7 @@ this.mydata.push([response.data[i].NumberOfCommits,response.data[i].NumberOfFork
             }
           }
 
+          this.mydata3 = [];
           //Now map1 has all the languages as keys, and the number of commits as values.
           map.delete(null);
           console.warn(map);
@@ -298,6 +268,27 @@ this.mydata.push([response.data[i].NumberOfCommits,response.data[i].NumberOfFork
           console.log(e);
           /* eslint-enable no-console */
         });
+        },
+    getData2(){
+      axios
+        .get(
+          "http://localhost:8080/userdata",
+          {
+            headers: {
+
+            },
+          }
+        )
+        .then((response) => {
+          this.mydata4 = [];
+          this.mydata4.push(response.data[0].Followers);
+          this.mydata4.push(response.data[0].Following);
+        })
+        .catch((e) => {
+          /* eslint-disable no-console */
+          console.log(e);
+          /* eslint-enable no-console */
+        });
         }
         },
         
@@ -305,6 +296,7 @@ this.mydata.push([response.data[i].NumberOfCommits,response.data[i].NumberOfFork
 
         created() {
     this.getData();
+    this.getData2();
   },
 };
 
