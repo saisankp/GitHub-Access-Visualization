@@ -1,0 +1,2 @@
+cd visualization
+pwd
