@@ -12,7 +12,7 @@
       </v-card-text>
       <!-- We can now show some basic information about the application -->
       <v-card-text class="white--text">
-        This application allows you to visualize information from a GitHub User using the official <a style="color:white;" href="https://docs.github.com/en/rest">GitHub API</a>. This project was completed for the module <a style="color:white;" href="https://teaching.scss.tcd.ie/module/csu33012-software-engineering/">Software Engineering Project</a> taken during the 3rd year of Computer Science at Trinity College Dublin. You can find data on the <a style="color:white;" href="\">Home Page</a> and visualizations on the <a style="color:white;" href="\stats">Statistics Page</a>.
+        This application allows you to visualize information from a GitHub User using the official <a style="color:white;" href="https://docs.github.com/en/rest">GitHub API</a>. This project was completed for the module <a style="color:white;" href="https://teaching.scss.tcd.ie/module/csu33012-software-engineering/">Software Engineering Project</a> taken during the 3rd year of Computer Science at Trinity College Dublin. You can find data on the <a style="color:white;" href="\">Home Page</a> and visualizations on the <a style="color:white;" href="\visualization">Visualization Page</a>.
       </v-card-text>
       <v-divider></v-divider>
       <!-- Now we can finish the footer with some final text -->

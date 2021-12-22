@@ -10,7 +10,7 @@
         <!-- Now we can make two buttons for the user to switch between the pages in the application. -->
         <v-col align="center" class="col-6">
           <v-btn text to="/" class="mx-12" style="color:white; margin-top: 5px;">Home</v-btn>
-          <v-btn text to="/stats" class="mx-12" style="color:white; margin-top: 5px;">Statistics</v-btn>
+          <v-btn text to="/visualization" class="mx-12" style="color:white; margin-top: 5px;">Visualization</v-btn>
         </v-col>
       </v-row>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" v-if="$vuetify.breakpoint.smAndDown"></v-app-bar-nav-icon>

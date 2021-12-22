@@ -1,11 +1,11 @@
-import TheHomePage from "./pages/TheHomePage.vue";
-import StatsPage from "./pages/StatsPage.vue";
+import HomePage from "./pages/homePage.vue";
+import VisualizationPage from "./pages/visualizationPage.vue";
 
 //Set the routes for the pages in the application.
 export const routes = [
   {
     path: "/",
-    component: TheHomePage,
+    component: HomePage,
     meta: {
       metaTags: [
         {
@@ -16,12 +16,12 @@ export const routes = [
     },
   },
   {
-    path: "/stats",
-    component: StatsPage,
+    path: "/visualization",
+    component: VisualizationPage,
     meta: {
       metaTags: [
         {
-          name: "Home Page",
+          name: "Visualization Page",
           content: "This is the second page",
         },
       ],

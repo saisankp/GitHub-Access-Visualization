@@ -5,8 +5,8 @@
     <Overview></Overview>
     <v-row>
       <!-- Now we can show the active and closed cases for Ireland. -->
-      <v-col><Active></Active></v-col>
-      <v-col><Closed></Closed></v-col>
+      <v-col><Account></Account></v-col>
+      <v-col><Personal></Personal></v-col>
     </v-row>
     <v-row class="pt-12">
       <!-- Finally we can show the data table containing information for many countries. -->
@@ -17,16 +17,16 @@
 
 <script>
 // We import the components like this
-import Overview from "../components/StatsOverview";
-import Active from "../components/activeCasesOverview";
-import Closed from "../components/closedCasesOverview";
-import Table from "../components/DataTable";
+import Overview from "../components/applicationOverview";
+import Account from "../components/accountInfo";
+import Personal from "../components/personalInfo";
+import Table from "../components/repoTable";
 export default {
   components: {
     Overview,
-    Closed,
+    Personal,
     Table,
-    Active,
+    Account,
   }
 };
 </script>
