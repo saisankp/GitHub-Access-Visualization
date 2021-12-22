@@ -162,7 +162,7 @@ export default {
     getData() {
       axios
         .get(
-          "http://localhost:8080/repo",
+          "http://localhost:8081/repo",
           {
             headers: {
 
@@ -186,7 +186,6 @@ export default {
             }
 
           }
-          console.warn(response);
         })
         .catch((e) => {
           /* eslint-disable no-console */

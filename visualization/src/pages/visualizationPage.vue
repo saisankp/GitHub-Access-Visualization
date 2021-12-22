@@ -201,7 +201,7 @@ pieConfig: {
         getData(){
       axios
         .get(
-          "http://localhost:8080/repo",
+          "http://localhost:8081/repo",
           {
             headers: {
 
@@ -272,7 +272,7 @@ this.mydata.push([response.data[i].NumberOfCommits,response.data[i].NumberOfFork
     getData2(){
       axios
         .get(
-          "http://localhost:8080/userdata",
+          "http://localhost:8081/userdata",
           {
             headers: {
 

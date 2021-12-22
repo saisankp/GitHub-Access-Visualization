@@ -3,7 +3,8 @@
   "version": "0.1.1",
   "private": true,
   "scripts": {
-    "start": "node ./server.js",
+    "visualize": "node ./server/server.js & npm run serve",
+    "start": "node ./server/server.js & npm run serve",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
