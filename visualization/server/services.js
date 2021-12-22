@@ -1,60 +1,65 @@
 
+    //This file will connect with our MongoDB Atlas database and provide the database information to our server as JSON.
+    //Firstly, we can import all the neccessary packages for our server.
     var util= require('util');
     var encoder = new util.TextEncoder('utf-8');
     const { MongoClient } = require("mongodb");
     const dotenv = require('dotenv');
     dotenv.config({ path: './.env' });
+    
+
+    //Connect to MongoDB Atlas with the details in the .env file inside the visualization directory.
     const uri = "mongodb+srv://" + process.env.MONGO_USERNAME + ":" + process.env.MONGO_PASSWORD + "@cluster0.yidvg.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
     console.warn("Server running on port 8081 with data for the application. Now we can run the application on port 8080 in this docker container.");
     const client = new MongoClient(uri);
-    var value = 0;
-    var value2 = 0;
-    var i = 0;
+    
+    //Variables which will soon hold the data from our Database.
+    var repoData = 0;
+    var userData = 0;
 
-    exports.mongodbcall = (req, res) => {
-        run();
-        const obj = JSON.parse(JSON.stringify(value))
+    exports.repoCollectionAsJSON = (req, res) => {
+        getRepoData();
+        const repoDataAsJSON = JSON.parse(JSON.stringify(repoData));
         res.setHeader('Access-Control-Allow-Origin', '*');
         res.setHeader('Access-Control-Allow-Methods', 'GET, POST');
         res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type, \Authorization');
-        res.json(obj)
+        res.json(repoDataAsJSON);
     }
 
-    exports.mongodbcall2 = (req, res) => {
-        run2();
-        const obj = JSON.parse(JSON.stringify(value2))
-        i++;
+    exports.userCollectionAsJSON = (req, res) => {
+        getUserData();
+        const userDataAsJSON = JSON.parse(JSON.stringify(userData));
         res.setHeader('Access-Control-Allow-Origin', '*');
         res.setHeader('Access-Control-Allow-Methods', 'GET, POST');
         res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type, \Authorization');
-        res.json(obj)
+        res.json(userDataAsJSON);
     }
 
-    async function run() {
+    async function getRepoData() {
       try {
         await client.connect();
         const database = client.db(process.env.DATABASE_NAME);
         const movies = database.collection(process.env.COLLECTION_REPOSITORIES);
         const movie = movies.find();
         const results = await movie.toArray();
-        value = results;
+        repoData = results;
       } catch (e) {
         console.log(e);
       }
     }
-    run().catch(console.dir);
 
-
-    async function run2() {
+    async function getUserData() {
         try {
           await client.connect();
           const database = client.db(process.env.DATABASE_NAME);
           const movies = database.collection(process.env.COLLECTION_USER);
           const movie = movies.find();
           const results = await movie.toArray();
-          value2 = results;
+          userData = results;
         } catch (e) {
           console.log(e);
         }
       }
-run2().catch(console.dir);
+
+    getRepoData().catch(console.dir);
+    getUserData().catch(console.dir);
