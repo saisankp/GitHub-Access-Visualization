@@ -61,7 +61,7 @@ COLLECTION_TEST=YourMongoCollectionForTestingName
 <p align=justify>For simplicity reasons, I have the script <b><i>setupEnv.sh</i></b> that makes these .env files for you by asking you to input each of the requested values needed to run the program. You can run this by using the command:</p>
   
 ```
-  bash setupEnv.sh
+  bash envSetup.sh
 ```
  
 ### Run the project
