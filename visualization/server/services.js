@@ -12,6 +12,7 @@
     const uri = "mongodb+srv://" + process.env.MONGO_USERNAME + ":" + process.env.MONGO_PASSWORD + "@cluster0.yidvg.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
     console.warn("Server running on port 8081 with data for the application. Now we can run the application on port 8080 in this docker container.");
     const client = new MongoClient(uri);
+    console.warn(process.env.MONGO_USERNAME);
     
     //Variables which will soon hold the data from our Database.
     var repoData = 0;
@@ -39,27 +40,25 @@
       try {
         await client.connect();
         const database = client.db(process.env.DATABASE_NAME);
-        const movies = database.collection(process.env.COLLECTION_REPOSITORIES);
-        const movie = movies.find();
+        const collection = database.collection(process.env.COLLECTION_REPOSITORIES);
+        const movie = collection.find();
         const results = await movie.toArray();
         repoData = results;
       } catch (e) {
         console.log(e);
       }
     }
-
+    getRepoData().catch(console.dir);
     async function getUserData() {
         try {
           await client.connect();
           const database = client.db(process.env.DATABASE_NAME);
-          const movies = database.collection(process.env.COLLECTION_USER);
-          const movie = movies.find();
+          const collection = database.collection(process.env.COLLECTION_USER);
+          const movie = collection.find();
           const results = await movie.toArray();
           userData = results;
         } catch (e) {
           console.log(e);
         }
       }
-
-    getRepoData().catch(console.dir);
     getUserData().catch(console.dir);
