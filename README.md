@@ -71,7 +71,7 @@ COLLECTION_TEST=YourMongoCollectionForTestingName
   bash visualize.sh
 ```
   
-<p align=justify>First, this will compile, test & package the Java portion of this project. Then, it will run the file <b><i>AccessGitHubAPI.java</i></b> with Maven to ask you what GitHub user you would like to visualize data from. After entering the username, you will see JSON printed to the screen as each repository from the user is stored in the MongoDB Atlas database, with the user data being stored at the end. Now that the data is stored in the cloud, the script will then build a Docker image using the Dockerfile inside of <b><i>/visualization</i></b>. After building this Docker Image, the script creates a Docker container with the image and starts the container. If you go to <b><i>http://localhost:8080/</i></b>, you will see the application there.</p>
+<p align=justify>First, this will compile, test & package the Java portion of this project. Then, it will run the file <b><i>AccessGitHubAPI.java</i></b> with Maven to ask you what GitHub user you would like to visualize data from. After entering the username, you will see a progress bar as each repository from the user is stored in the MongoDB Atlas database, with the user data being stored at the end. Now that the data is stored in the cloud, the script will then build a Docker image using the Dockerfile inside of <b><i>/visualization</i></b>. After building this Docker Image, the script creates a Docker container with the image and starts the container. If you go to <b><i>http://localhost:8080/</i></b>, you will see the application there.</p>
   
   
 ### Testing
