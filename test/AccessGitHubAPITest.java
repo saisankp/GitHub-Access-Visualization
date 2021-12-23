@@ -5,8 +5,6 @@ import org.bson.Document;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-
-
 import io.github.cdimascio.dotenv.Dotenv;
 
 class AccessGitHubAPITest {

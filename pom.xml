@@ -7,7 +7,20 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>GitHub-Access</name>
 	<description>A project that uses the GitHub API to get data.</description>
+		<properties>
+		<java.version>1.8</java.version>
+		<junit.jupiter.version>5.6.2</junit.jupiter.version>
+		<maven.maven-surefire-plugin.version>3.0.0-M4</maven.maven-surefire-plugin.version>
+	</properties>
 	<dependencies>
+
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter</artifactId>
+			<version>${junit.jupiter.version}</version>
+			<scope>test</scope>
+		</dependency>
+
 		<!-- https://mvnrepository.com/artifact/org.eclipse.mylyn.github/org.eclipse.egit.github.core -->
 		<dependency>
 			<groupId>org.eclipse.mylyn.github</groupId>
@@ -24,15 +37,11 @@
 			<artifactId>dotenv-java</artifactId>
 			<version>2.2.0</version>
 		</dependency>
-		<dependency>
-			<groupId>org.junit.jupiter</groupId>
-			<artifactId>junit-jupiter-engine</artifactId>
-			<version>5.2.0</version>
-		</dependency>
 	</dependencies>
 
 	<build>
 		<sourceDirectory>src</sourceDirectory>
+		<testSourceDirectory>test</testSourceDirectory>
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
