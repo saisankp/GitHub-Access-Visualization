@@ -137,6 +137,7 @@ public class MongoDB {
 		mongoDocument.append("AccountCreation", user.getCreatedAt());
 		mongoDocument.append("GitHubAccountURL", user.getHtmlUrl());
 		mongoDocument.append("GitHubAvatarURL", user.getAvatarUrl());
+		System.out.println(mongoDocument.toJson());
 		col.insertOne(mongoDocument);
 	}
 
