@@ -34,19 +34,19 @@ public class MongoDB {
 		db = client.getDatabase(databaseName);
 		col = db.getCollection(collectionName);
 	}
-	
+
 	public void setDatabase(String databaseName) {
 		db = client.getDatabase(databaseName);
 	}
-	
+
 	public void setCollection(String collectionName) {
 		col = db.getCollection(collectionName);
 	}
-	
+
 	public MongoDatabase getDatabase() {
 		return db;
 	}
-	
+
 	public MongoCollection<Document> getCollection() {
 		return col;
 	}
@@ -56,8 +56,8 @@ public class MongoDB {
 		RepositoryService repoService = new RepositoryService(client);
 		CommitService commitService = new CommitService(client);
 		List<Repository> repoList = repoService.getRepositories(username);
-		for (Repository repo : repoList) {
-			System.out.println(repo.getName());
+		for (Repository repo : repoList) {		
+			progressBar.updateProgressBar(id, repoList.size(), "Storing repository data to MongoDB Atlas");
 			Document mongoDocument = new Document("_id", id);
 			mongoDocument.append("RepositoryName", repo.getName());
 			HashMap<String, List<String>> hm = new HashMap<>();
@@ -65,10 +65,7 @@ public class MongoDB {
 			List<RepositoryCommit> repoCommits = null;
 			try {
 				repoCommits = commitService.getCommits(repo);
-			} catch (Exception e) {
-				
-			}
-			
+			} catch (Exception e) {}
 			int numberOfCommits = 0;
 			if(repoCommits != null) {
 				for(RepositoryCommit commit : repoCommits) {				
@@ -78,66 +75,60 @@ public class MongoDB {
 					numberOfCommits++;
 				}
 			}
-			//mongoDocument.append("Commits", hm);
 			mongoDocument.append("NumberOfCommits", numberOfCommits);
 			mongoDocument.append("NumberOfForks", repo.getForks());
 			mongoDocument.append("NumberOfWatchers", repo.getWatchers());
-			
 			mongoDocument.append("Language", repo.getLanguage());
 			mongoDocument.append("Description", repo.getDescription());
 			mongoDocument.append("Size", repo.getSize());
-			
-			
 			mongoDocument.append("Creation", repo.getCreatedAt());
 			mongoDocument.append("Updated", repo.getUpdatedAt());
 			mongoDocument.append("URL", repo.getUrl());
-			System.out.println(mongoDocument.toJson());
 			try {
 				col.insertOne(mongoDocument);
 			} catch (Exception e) {
 				col.deleteOne(mongoDocument);
 				Document failedMongoDocument = new Document("_id", id);
 				mongoDocument.append("RepositoryName", repo.getName());
-				//mongoDocument.append("Commits", "N/A");
-				//mongoDocument.append("NumberOfCommits", numberOfCommits);
 				mongoDocument.append("NumberOfForks", repo.getForks());
 				mongoDocument.append("NumberOfWatchers", repo.getWatchers());
-				
 				mongoDocument.append("Language", repo.getLanguage());
-				//mongoDocument.append("Description", repo.getDescription());
-				//mongoDocument.append("Size", repo.getSize());
-				
-				
-				//mongoDocument.append("Creation", repo.getCreatedAt());
-				//mongoDocument.append("Updated", repo.getUpdatedAt());
-				//mongoDocument.append("URL", repo.getUrl());
-				System.out.println(mongoDocument.toJson());
 				col.insertOne(failedMongoDocument);
 				System.out.println("I had an oopsie.");
 				e.printStackTrace();
 			}
-			
 			id++;
 		}
 	}
-	
-	
+
+
 	public void getAndStoreUserInfo(GitHubClient client, String username) throws IOException {
 		UserService userService = new UserService(client);
 		User user = userService.getUser(username);
 		Document mongoDocument = new Document("_id", 1);
+		progressBar.updateProgressBar(1, 11, "Storing user data to MongoDB Atlas");
 		mongoDocument.append("UserName", username);
+		progressBar.updateProgressBar(2, 11, "Storing user data to MongoDB Atlas");
 		mongoDocument.append("Name", user.getName());
+		progressBar.updateProgressBar(3, 11, "Storing user data to MongoDB Atlas");
 		mongoDocument.append("Followers", user.getFollowers());
+		progressBar.updateProgressBar(4, 11, "Storing user data to MongoDB Atlas");
 		mongoDocument.append("Following", user.getFollowing());
+		progressBar.updateProgressBar(5, 11, "Storing user data to MongoDB Atlas");
 		mongoDocument.append("Location", user.getLocation());
+		progressBar.updateProgressBar(6, 11, "Storing user data to MongoDB Atlas");
 		mongoDocument.append("Hirable", user.isHireable());
+		progressBar.updateProgressBar(7, 11, "Storing user data to MongoDB Atlas");
 		mongoDocument.append("PublicRepositories", user.getPublicRepos());
+		progressBar.updateProgressBar(8, 11, "Storing user data to MongoDB Atlas");
 		mongoDocument.append("LinkedBlogURL", user.getBlog());
+		progressBar.updateProgressBar(9, 11, "Storing user data to MongoDB Atlas");
 		mongoDocument.append("AccountCreation", user.getCreatedAt());
+		progressBar.updateProgressBar(10, 11, "Storing user data to MongoDB Atlas");
 		mongoDocument.append("GitHubAccountURL", user.getHtmlUrl());
+		progressBar.updateProgressBar(11, 11, "Storing user data to MongoDB Atlas");
 		mongoDocument.append("GitHubAvatarURL", user.getAvatarUrl());
-		System.out.println(mongoDocument.toJson());
+
 		col.insertOne(mongoDocument);
 	}
 
@@ -151,9 +142,9 @@ public class MongoDB {
 			col.deleteMany(document);	
 		}
 	}
-	
+
 	public void insertDocument(Document mongoDocument) {
 		col.insertOne(mongoDocument);
 	}
-	
+
 }
