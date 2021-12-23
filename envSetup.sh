@@ -26,6 +26,10 @@ read -p "Enter your MongoDB Atlas database name: "
 
 echo "DATABASE_NAME=$REPLY" >> .env
 
+read -p "Enter your MongoDB Atlas test database name: "
+
+echo "DATABASE_TEST=$REPLY" >> .env
+
 read -p "Enter your MongoDB Atlas Collection for repository data: "
 
 echo "COLLECTION_REPOSITORIES=$REPLY" >> .env
@@ -33,5 +37,9 @@ echo "COLLECTION_REPOSITORIES=$REPLY" >> .env
 read -p "Enter your MongoDB Atlas Collection for user data: "
 
 echo "COLLECTION_USER=$REPLY" >> .env
+
+read -p "Enter your MongoDB Atlas Collection for tests: "
+
+echo "COLLECTION_TEST=$REPLY" >> .env
 
 cp .env visualization/
