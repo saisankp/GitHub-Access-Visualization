@@ -22,8 +22,10 @@ class MongoDBTest {
 	
 	@BeforeAll
 	static void setupGHClient() {
+		dotenv = Dotenv.load();
 		GHclient = new GitHubClient();
 		GHclient.setCredentials(dotenv.get("GITHUB_USERNAME"), dotenv.get("GITHUB_PASSWORD"));
+		GHclient.setOAuth2Token(dotenv.get("OAUTH_TOKEN"));
 	}
 	
 	@Test
@@ -34,6 +36,7 @@ class MongoDBTest {
 	
 	@Test
 	void getAndStoreUserRepositoryInfoTest() {
+		mongoDB.clearCollection();
 		try {
 			mongoDB.getAndStoreUserRepositoryInfo(GHclient, dotenv.get("GITHUB_USERNAME"));
 		} catch (IOException e) {
@@ -43,6 +46,7 @@ class MongoDBTest {
 	
 	@Test
 	void getAndStoreUserInfoTest() {
+		mongoDB.clearCollection();
 		try {
 			mongoDB.getAndStoreUserInfo(GHclient, dotenv.get("GITHUB_USERNAME"));
 		} catch (IOException e) {
