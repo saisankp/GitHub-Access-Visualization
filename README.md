@@ -76,3 +76,6 @@ COLLECTION_TEST=YourMongoCollectionForTestingName
   
 ### Testing
 <p align=justify>There are two elements to test in this project. One is the Java aspect of the project (inside the <b><i>/src</i></b>) directory, which is done with JUnit. Another element is the Javascript aspect of the project (inside the <b><i>/visualization</i></b>) directory (specifically Node.js) which is done with Jest. Tests are ran automatically every time you run <b><i>visualize.sh</i></b>. This script runs <b><i>mvn clean install</i></b> which runs all JUnit tests. The script also runs <b><i>docker run</i></b> which in turn will run <b><i>npm test</i></b> to run all tests with Jest.</p>
+
+### Demo
+https://user-images.githubusercontent.com/34750736/147292278-7f048e75-d1bd-4b6c-9a26-9b3b3fa06992.mov
