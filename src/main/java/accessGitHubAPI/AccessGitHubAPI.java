@@ -21,5 +21,6 @@ public class AccessGitHubAPI {
 		mongodb.setCollection(dotenv.get("COLLECTION_USER"));
 		mongodb.clearCollection();
 		mongodb.getAndStoreUserInfo(GHclient, username);
+		System.exit(0);
 	}	
 }
