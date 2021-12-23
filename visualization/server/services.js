@@ -7,12 +7,10 @@
     const dotenv = require('dotenv');
     dotenv.config({ path: './.env' });
     
-
     //Connect to MongoDB Atlas with the details in the .env file inside the visualization directory.
     const uri = "mongodb+srv://" + process.env.MONGO_USERNAME + ":" + process.env.MONGO_PASSWORD + "@cluster0.yidvg.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
-    console.warn("Server running on port 8081 with data for the application. Now we can run the application on port 8080 in this docker container.");
+    console.log("Server running on port 8081 with data for the application. Now we can run the application on port 8080 in this docker container.");
     const client = new MongoClient(uri);
-    console.warn(process.env.MONGO_USERNAME);
     
     //Variables which will soon hold the data from our Database.
     var repoData = 0;
@@ -49,6 +47,7 @@
       }
     }
     getRepoData().catch(console.dir);
+    
     async function getUserData() {
         try {
           await client.connect();
