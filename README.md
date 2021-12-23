@@ -38,7 +38,7 @@
   
 ### Setup .env files (only for running the project for the first time).
  
-<p align=justify>Since we interrogate the GitHub API and store data in our MongoDB Atlas collections within our databases, we need the project to know information like your GitHub username, password, OAuth token, MongoDB Atlas database username, password, database names, collection names etc. For security reasons, I store this data in a .env file - There is one in the root directory as well as an indentical one in the visualization directory. For simplicity reaons, I have the script <b><i>setupEnv.sh</i></b> that makes these .env files for you by asking you to input each of the requested values needed to run the program. You can run this by using the command:<p>
+<p align=justify>Since we interrogate the GitHub API and store data in our MongoDB Atlas collections within our databases, we need the project to know information like your GitHub username, password, OAuth token, MongoDB Atlas database username, password, database names, collection names etc. For security reasons, I store this data in a .env file - there is one in the root directory as well as an indentical one in the visualization directory. For simplicity reasons, I have the script <b><i>setupEnv.sh</i></b> that makes these .env files for you by asking you to input each of the requested values needed to run the program. You can run this by using the command:<p>
   
 ```
   bash setupEnv.sh
