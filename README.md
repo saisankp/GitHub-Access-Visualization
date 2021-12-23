@@ -46,6 +46,7 @@ GITHUB_PASSWORD=YourGitHubPassword
 OAUTH_TOKEN=YourOAuthTokenFrom[https://github.com/settings/tokens]
 MONGO_USERNAME=YourMongoDatabaseUsername
 MONGO_PASSWORD=YourMongoDatabasePassword
+MONGO_CLUSTER_URL=TheBlueHighlightedPartAt[https://user-images.githubusercontent.com/34750736/147285458-37d3d5d9-d530-46fd-8a81-5c690c16b629.png]
 DATABASE_NAME=YourMongoDatabaseName
 DATABASE_TEST=YourMongoTestDatabaseName
 COLLECTION_REPOSITORIES=YourMongoCollectionForRepositoryDataName

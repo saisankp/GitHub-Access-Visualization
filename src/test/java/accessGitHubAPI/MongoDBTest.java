@@ -20,7 +20,7 @@ class MongoDBTest {
 	@BeforeAll
 	static void setupDB() {
 		dotenv = Dotenv.load();
-		mongoDB = new MongoDB(dotenv.get("MONGO_USERNAME"), dotenv.get("MONGO_PASSWORD"), dotenv.get("DATABASE_TEST"), dotenv.get("COLLECTION_TEST"));
+		mongoDB = new MongoDB(dotenv.get("MONGO_USERNAME"), dotenv.get("MONGO_PASSWORD"), dotenv.get("MONGO_CLUSTER_URL"), dotenv.get("DATABASE_TEST"), dotenv.get("COLLECTION_TEST"));
 	}
 	
 	@BeforeAll

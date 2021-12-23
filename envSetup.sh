@@ -22,6 +22,10 @@ read -p "Enter your MongoDB Atlas password: "
 
 echo "MONGO_PASSWORD=$REPLY" >> .env
 
+read -p "Enter your MongoDB Atlas Cluster URL: "
+
+echo "MONGO_CLUSTER_URL=$REPLY" >> .env
+
 read -p "Enter your MongoDB Atlas database name: "
 
 echo "DATABASE_NAME=$REPLY" >> .env

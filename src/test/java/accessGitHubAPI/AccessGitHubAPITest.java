@@ -21,7 +21,7 @@ class AccessGitHubAPITest {
 	
 	@Test
 	void mongoDBConnectionTest() {
-		MongoDB mongodb =  new MongoDB(dotenv.get("MONGO_USERNAME"), dotenv.get("MONGO_PASSWORD"), dotenv.get("DATABASE_TEST"), dotenv.get("COLLECTION_TEST"));
+		MongoDB mongodb =  new MongoDB(dotenv.get("MONGO_USERNAME"), dotenv.get("MONGO_PASSWORD"), dotenv.get("MONGO_CLUSTER_URL"), dotenv.get("DATABASE_TEST"), dotenv.get("COLLECTION_TEST"));
 		assertDoesNotThrow(() -> mongodb.clearCollection());
 		Document mongoDocument = new Document("_id", 1);
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm:ss dd/MM/yyyy");  

@@ -29,8 +29,8 @@ public class MongoDB {
 	private MongoDatabase db;
 	private MongoCollection<Document> col;
 
-	public MongoDB(String mongoUsername, String mongoPassword, String databaseName, String collectionName) {
-		client = MongoClients.create("mongodb+srv://" + mongoUsername + ":" + mongoPassword + "@cluster0.yidvg.mongodb.net/myFirstDatabase?retryWrites=true&w=majority");
+	public MongoDB(String mongoUsername, String mongoPassword, String mongoClusterURL, String databaseName, String collectionName) {
+		client = MongoClients.create("mongodb+srv://" + mongoUsername + ":" + mongoPassword + "@" + mongoClusterURL  + "/myFirstDatabase?retryWrites=true&w=majority");
 		db = client.getDatabase(databaseName);
 		col = db.getCollection(collectionName);
 	}
