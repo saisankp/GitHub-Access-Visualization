@@ -56,8 +56,13 @@ public class MongoDB {
 		RepositoryService repoService = new RepositoryService(client);
 		CommitService commitService = new CommitService(client);
 		List<Repository> repoList = repoService.getRepositories(username);
-		for (Repository repo : repoList) {		
-			progressBar.updateProgressBar(id, repoList.size(), "Storing repository data to MongoDB Atlas");
+		for (Repository repo : repoList) {
+			if(id == repoList.size()) {
+				ProgressBar.updateProgressBar(id, repoList.size(), "Stored repository data to MongoDB Atlas");
+			}
+			else {
+				ProgressBar.updateProgressBar(id, repoList.size(), "Storing repository data to MongoDB Atlas");	
+			}
 			Document mongoDocument = new Document("_id", id);
 			mongoDocument.append("RepositoryName", repo.getName());
 			HashMap<String, List<String>> hm = new HashMap<>();
@@ -106,29 +111,19 @@ public class MongoDB {
 		UserService userService = new UserService(client);
 		User user = userService.getUser(username);
 		Document mongoDocument = new Document("_id", 1);
-		progressBar.updateProgressBar(1, 11, "Storing user data to MongoDB Atlas");
+		ProgressBar.updateProgressBar(1, 12, "Storing user data to MongoDB Atlas");
 		mongoDocument.append("UserName", username);
-		progressBar.updateProgressBar(2, 11, "Storing user data to MongoDB Atlas");
 		mongoDocument.append("Name", user.getName());
-		progressBar.updateProgressBar(3, 11, "Storing user data to MongoDB Atlas");
 		mongoDocument.append("Followers", user.getFollowers());
-		progressBar.updateProgressBar(4, 11, "Storing user data to MongoDB Atlas");
 		mongoDocument.append("Following", user.getFollowing());
-		progressBar.updateProgressBar(5, 11, "Storing user data to MongoDB Atlas");
 		mongoDocument.append("Location", user.getLocation());
-		progressBar.updateProgressBar(6, 11, "Storing user data to MongoDB Atlas");
 		mongoDocument.append("Hirable", user.isHireable());
-		progressBar.updateProgressBar(7, 11, "Storing user data to MongoDB Atlas");
 		mongoDocument.append("PublicRepositories", user.getPublicRepos());
-		progressBar.updateProgressBar(8, 11, "Storing user data to MongoDB Atlas");
 		mongoDocument.append("LinkedBlogURL", user.getBlog());
-		progressBar.updateProgressBar(9, 11, "Storing user data to MongoDB Atlas");
 		mongoDocument.append("AccountCreation", user.getCreatedAt());
-		progressBar.updateProgressBar(10, 11, "Storing user data to MongoDB Atlas");
 		mongoDocument.append("GitHubAccountURL", user.getHtmlUrl());
-		progressBar.updateProgressBar(11, 11, "Storing user data to MongoDB Atlas");
 		mongoDocument.append("GitHubAvatarURL", user.getAvatarUrl());
-
+		ProgressBar.updateProgressBar(12, 12, "Stored user data to MongoDB Atlas");
 		col.insertOne(mongoDocument);
 	}
 
@@ -146,5 +141,4 @@ public class MongoDB {
 	public void insertDocument(Document mongoDocument) {
 		col.insertOne(mongoDocument);
 	}
-
 }

@@ -8,11 +8,8 @@ import io.github.cdimascio.dotenv.Dotenv;
 
 public class AccessGitHubAPI {
 	public static void main(String[] args) throws IOException {
-		//Get user password from .env file
 		Dotenv dotenv = Dotenv.load();
-		//Make MongoDB object to store GitHub data to MongoDB Atlas
 		MongoDB mongodb = new MongoDB(dotenv.get("MONGO_USERNAME"), dotenv.get("MONGO_PASSWORD"), dotenv.get("DATABASE_NAME"), dotenv.get("COLLECTION_REPOSITORIES"));
-		//Make GitHubClient object to sign into GitHub to make authenticated requests.
 		GitHubClient GHclient = new GitHubClient();
 		GHclient.setCredentials(dotenv.get("GITHUB_USERNAME"), dotenv.get("GITHUB_PASSWORD"));
 		GHclient.setOAuth2Token(dotenv.get("OAUTH_TOKEN"));

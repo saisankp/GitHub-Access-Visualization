@@ -4,7 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
-public class progressBar {
+public class ProgressBar {
 	/**
      * Returns the number of lines in a file, with the path to the file.
      * @param: Path to the file we want to count the number of lines in.
