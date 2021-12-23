@@ -15,7 +15,7 @@
 <p align=justify>You can download Maven on the <a href="https://maven.apache.org/download.cgi">Apache Maven Downloads page</a>. There are also instructions on how to install Maven for Windows, MacOS, and Linux on the  <a href="https://maven.apache.org/install.html">Apache Maven Installation page</a>.</p>
 
 #### MongoDB Atlas
-<p align=justify>You don't need to necessarily <i>download</i> anything for this, but you do need to setup an account, and make a few databases and collections to store data with. Here are the steps you need to follow:<p>
+<p align=justify>You don't need to necessarily <i>download</i> anything for this, but you do need to setup an account, and make a few databases and collections to store data with. Here are the steps you need to follow:</p>
   1. Log-in or Sign-up for your MongoDB account on the <a href="https://account.mongodb.com/account/login">MongoDB Atlas Login page</a>. <br>
   2. Choose the FREE deployment option (Shared Cluster) when prompted.  <br>
   3. When asked to choose a Cloud Provider, Region, Cluster Tier etc, choose anything here as it does not matter for this project. <br>
@@ -25,7 +25,7 @@
   7. Click the "Add my Current IP Address" button so we will be able to connect to our project's clusters. <br>
   8. Now click on your Cluster, and go to your collections and click on "Add My Own Data". <br>
   9. Create a database with two collections. This will be used for storing our GitHub user and repository information respectively. <br>
-  10. Create another database, with one collection. This will be used for testing. <br>
+  10. Create another database, with one collection. This will be used for testing. <br><br>
   
  
   <p align="center">
@@ -34,21 +34,41 @@
 
   
 #### Docker
-<p align=justify>You can install Docker from the <a href="https://docs.docker.com/get-docker/">Docker Docs Get Docker page</a>.<p>
+<p align=justify>You can install Docker from the <a href="https://docs.docker.com/get-docker/">Docker Docs Get Docker page</a>.</p>
   
 ### Setup .env files (only for running the project for the first time).
  
-<p align=justify>Since we interrogate the GitHub API and store data in our MongoDB Atlas collections within our databases, we need the project to know information like your GitHub username, password, OAuth token, MongoDB Atlas database username, password, database names, collection names etc. For security reasons, I store this data in a .env file - there is one in the root directory as well as an indentical one in the visualization directory. For simplicity reasons, I have the script <b><i>setupEnv.sh</i></b> that makes these .env files for you by asking you to input each of the requested values needed to run the program. You can run this by using the command:<p>
+<p align=justify>Since we interrogate the GitHub API and store data in our MongoDB Atlas collections within our databases, we need the project to know information like your GitHub username, password, OAuth token, MongoDB Atlas database username, password, database names, collection names etc. For security reasons, I store this data in a .env file - there is one in the root directory as well as an indentical one in the visualization directory. The format of the files looks like this: <br>
+ 
+```
+GITHUB_USERNAME=YourGitHubUsername
+GITHUB_PASSWORD=YourGitHubPassword
+OAUTH_TOKEN=YourOAuthTokenFrom[https://github.com/settings/tokens]
+MONGO_USERNAME=YourMongoDatabaseUsername
+MONGO_PASSWORD=YourMongoDatabasePassword
+DATABASE_NAME=YourMongoDatabaseName
+DATABASE_TEST=YourMongoTestDatabaseName
+COLLECTION_REPOSITORIES=YourMongoCollectionForRepositoryDataName
+COLLECTION_USER=YourMongoCollectionForUserDataName
+COLLECTION_TEST=YourMongoCollectionForTestingName
+```
+  
+  
+For simplicity reasons, I have the script <b><i>setupEnv.sh</i></b> that makes these .env files for you by asking you to input each of the requested values needed to run the program. You can run this by using the command:</p>
   
 ```
   bash setupEnv.sh
 ```
  
 ### Run the project
-<p align=justify>After all the setup has been done, we can finally run the project using the script <b><i>visualize.sh</i></b> as so:<p>
+<p align=justify>After all the setup has been done, we can finally run the project using the script <b><i>visualize.sh</i></b> as so:</p>
   
 ```
   bash visualize.sh
 ```
   
-<p align=justify>First, this will compile, test & package the Java portion of this project. Then, it will run the file <b><i>AccessGitHubAPI.java</i></b> with Maven to ask you what GitHub user you would like to visualize data from. After entering the username, you will see JSON printed to the screen as each repository from the user is stored in the MongoDB Atlas database, with the user data being stored at the end. Now that the data is stored in the cloud, the script will then build a Docker image using the Dockerfile inside of <b><i>/visualization</i></b>. After building this Docker Image, the script creates a Docker container with the image and starts the container. If you go to <b><i>http://localhost:8080/</i></b>, you will see the application there.<p>
+<p align=justify>First, this will compile, test & package the Java portion of this project. Then, it will run the file <b><i>AccessGitHubAPI.java</i></b> with Maven to ask you what GitHub user you would like to visualize data from. After entering the username, you will see JSON printed to the screen as each repository from the user is stored in the MongoDB Atlas database, with the user data being stored at the end. Now that the data is stored in the cloud, the script will then build a Docker image using the Dockerfile inside of <b><i>/visualization</i></b>. After building this Docker Image, the script creates a Docker container with the image and starts the container. If you go to <b><i>http://localhost:8080/</i></b>, you will see the application there.</p>
+  
+  
+### Testing
+<p align=justify>There are two elements to test in this project. One is the Java aspect of the project (inside the <b><i>/src</i></b>) directory, which is done with JUnit. Another element is the Javascript aspect of the project (inside the <b><i>/visualization</i></b>) directory (specifically Node.js) which is done with Jest. Tests are ran automatically every time you run <b><i>visualize.sh</i></b>. This script runs <b><i>mvn clean install</i></b> which runs all JUnit tests. The script also runs <b><i>docker run</i></b> which in turn will run <b><i>npm test</i></b> to run all tests with Jest.</p>
