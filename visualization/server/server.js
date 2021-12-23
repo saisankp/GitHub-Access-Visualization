@@ -15,5 +15,5 @@ app.get("/visualization", (req, res) => {
   res.status(200).send("This is the stats page!");
 });
 app.use(cors());
-let port = process.env.APP_PORT || 8081;
+let port = 8081;
 module.exports = app.listen(port);

@@ -4,10 +4,9 @@
   "private": true,
   "scripts": {
     "visualize": "node ./server/server.js & npm run serve",
-    "start": "node ./server/server.js & npm run build && serve -s -n dist -l 8080",
+    "start": "npm test && node ./server/server.js & npm run build && serve -s -n dist -l 8080",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "finish" : "serve -s dist -l 8080",
     "lint": "vue-cli-service lint",
     "test": "jest --coverage --forceExit"
   },

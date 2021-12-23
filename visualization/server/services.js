@@ -41,8 +41,8 @@
         await client.connect();
         const database = client.db(process.env.DATABASE_NAME);
         const collection = database.collection(process.env.COLLECTION_REPOSITORIES);
-        const movie = collection.find();
-        const results = await movie.toArray();
+        const foundCollection = collection.find();
+        const results = await foundCollection.toArray();
         repoData = results;
       } catch (e) {
         console.log(e);
@@ -54,8 +54,8 @@
           await client.connect();
           const database = client.db(process.env.DATABASE_NAME);
           const collection = database.collection(process.env.COLLECTION_USER);
-          const movie = collection.find();
-          const results = await movie.toArray();
+          const foundCollection = collection.find();
+          const results = await foundCollection.toArray();
           userData = results;
         } catch (e) {
           console.log(e);
