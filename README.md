@@ -54,7 +54,7 @@ COLLECTION_USER=YourMongoCollectionForUserDataName
 COLLECTION_TEST=YourMongoCollectionForTestingName
 ```
   
-<p align=justify>All the values should be self-explanatory, but if you are confused about where to find the value for 'MONGO_CLUSTER_URL', here it is.</p>
+<p align=justify>All the values should be self-explanatory, but if you are confused about where to find the value for 'MONGO_CLUSTER_URL' (it is different for everyone), here it is: </p>
 
 ![video-output-D9C26D54-BB91-4BE4-B7B1-A85DFA801D5A](https://user-images.githubusercontent.com/34750736/147286469-949087fd-9644-4215-8ef5-4f3548bf923a.gif)
   
