@@ -6,14 +6,23 @@ import java.time.format.DateTimeFormatter;
 import org.bson.Document;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.slf4j.LoggerFactory;
 
+import ch.qos.logback.classic.Level;
+import ch.qos.logback.classic.LoggerContext;
 import io.github.cdimascio.dotenv.Dotenv;
 
 
 class AccessGitHubAPITest {
 	
 	private static Dotenv dotenv;
-
+	
+	@BeforeAll
+	static void disableLoggingWarning() {
+		LoggerContext loggerContext = (LoggerContext)LoggerFactory.getILoggerFactory();
+		loggerContext.getLogger("org.mongodb.driver").setLevel(Level.ERROR);
+	}
+	
 	@BeforeAll
 	static void dotEnvSetUpTest() {
 		assertDoesNotThrow(() -> dotenv = Dotenv.load());

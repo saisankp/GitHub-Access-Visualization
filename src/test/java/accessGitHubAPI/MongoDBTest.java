@@ -7,7 +7,10 @@ import java.io.IOException;
 import org.eclipse.egit.github.core.client.GitHubClient;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.slf4j.LoggerFactory;
 
+import ch.qos.logback.classic.Level;
+import ch.qos.logback.classic.LoggerContext;
 import io.github.cdimascio.dotenv.Dotenv;
 
 
@@ -16,6 +19,12 @@ class MongoDBTest {
 	private static Dotenv dotenv;
 	protected static MongoDB mongoDB;
 	protected static GitHubClient GHclient;
+	
+	@BeforeAll
+	static void disableLoggingWarning() {
+		LoggerContext loggerContext = (LoggerContext)LoggerFactory.getILoggerFactory();
+		loggerContext.getLogger("org.mongodb.driver").setLevel(Level.ERROR);
+	}
 	
 	@BeforeAll
 	static void setupDB() {
