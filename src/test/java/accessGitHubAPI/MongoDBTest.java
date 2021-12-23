@@ -1,3 +1,5 @@
+package accessGitHubAPI;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.IOException;
@@ -7,6 +9,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import io.github.cdimascio.dotenv.Dotenv;
+
 
 class MongoDBTest {
 
