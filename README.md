@@ -36,6 +36,10 @@
 #### Docker
 <p align=justify>You can install Docker from the <a href="https://docs.docker.com/get-docker/">Docker Docs Get Docker page</a>.</p>
   
+#### Node.js
+<p align=justify>You can install Node.js from the <a href="https://nodejs.org/en/">Node.js Installer Downloads page</a>. This will also download NPM (node package manager).</p>
+  
+
 ### Setup .env files (only for running the project for the first time).
  
 <p align=justify>Since we interrogate the GitHub API and store data in our MongoDB Atlas collections within our databases, we need the project to know information like your GitHub username, password, OAuth token, MongoDB Atlas database username, password, database names, collection names etc. For security reasons, I store this data in a .env file - there is one in the root directory as well as an indentical one in the visualization directory. The format of the files looks like this: <br></p>
